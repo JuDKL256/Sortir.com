@@ -22,7 +22,6 @@ class SortieController extends AbstractController
     ): Response
     {
 
-        //Récupére les sortie publiés, du plus récent au plus ancien
         $sorties = $sortieRepository
             ->findAll();
         return $this->render('sortie/list.html.twig', ["sorties" => $sorties]);
@@ -48,7 +47,7 @@ class SortieController extends AbstractController
     {
         //Création de l'entité vide
         $sortie = new Sortie();
-        $sortie->setOrganisateur($this->getUser()->getParticipant->getParticipantname());
+        $sortie->setOrganisateur($this->getUser());
         //Création du formulaire et association de l'entité vide.
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         //Récupère les données du formulaire et on les injecte dans notre $sortie.
@@ -100,7 +99,7 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
         }
         //Affiche le formulaire
-        return $this->render('sortie/create.html.twig', ["sortieForm" => $sortieForm]);
+        return $this->render('sortie/creation.html.twig', ["sortieForm" => $sortieForm]);
     }
 
     #[Route('/sorties/{id}/delete', name: 'sortie_delete', requirements: ['id' => '\d+'], methods: ['GET'])]
@@ -129,5 +128,51 @@ class SortieController extends AbstractController
             $this->addFlash('danger', 'Your sortie cannot be deleted!');
         }
         return $this->redirectToRoute('sortie_list');
+    }
+
+    #[Route('/sorties/{id}/inscription', name: 'sortie_inscription', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+//    #[IsGranted('WISH_EDIT', 'sortie')]
+    public function inscriptionSortie(Sortie $sortie, Request $request, EntityManagerInterface $em): Response
+    {
+
+        if (!$sortie) {
+            throw $this->createNotFoundException('Pardon, mais cette sortie n\'existe pas !' );
+        }
+
+        $sortie = $em->getRepository(Sortie::class)->find($sortie->getId());
+        if ($sortie->getParticipants()->contains($this->getUser())) {
+            $this->addFlash('fail', 'Tu es déjà inscris !');
+        }
+        elseif ($this->getUser() instanceof Participant and $sortie->getNbInscriptionMax() > $sortie->getParticipants()->count()) {
+
+            $sortie->addParticipant($this->getUser());
+            $em->flush();
+
+            $this->addFlash('success', 'Your sortie has been updated!');
+
+            return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
+
+        }
+
+        return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
+    }
+
+    #[Route('/sorties/{id}/desinscription', name: 'desinscription', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+//    #[IsGranted('WISH_EDIT', 'sortie')]
+    public function desinscription(Sortie $sortie, Request $request, EntityManagerInterface $em): Response
+    {
+
+        if (!$sortie) {
+            throw $this->createNotFoundException('Pardon, mais cette sortie n\'existe pas !' );
+        }
+
+        $sortie = $em->getRepository(Sortie::class)->find($sortie->getId());
+        if ($sortie->getParticipants()->contains($this->getUser())) {
+            $sortie->removeParticipant($this->getUser());
+            $em->flush();
+            $this->addFlash('success', 'Tu as été desincris de cette sortie!');
+        }
+
+        return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
     }
 }

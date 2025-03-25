@@ -1,10 +1,20 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Toutes les sorties ! | {{ parent() }}{% endblock %}
+
 {% block body %}
+    <h2>Toutes les sorties !</h2>
+    <ul>
+        {% for sortie in sorties %}
+            <li>
+                <article>
+                    <a href="{{ path('sortie_detail', {'id': sortie.id}) }}"
+                       title="View this wish in details">{{ sortie.nom }} - {{ sortie.lieu.nom }} - {{ sortie.participants.count }} / {{ sortie.nbInscriptionMax }}</a>
 
+                </article>
+            </li>
+        {% else %}
+            <li>Pas de sortie dans la bdd</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
-
-{% block title %}
-
-{% endblock %}
-

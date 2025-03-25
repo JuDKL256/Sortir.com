@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <form >
+
+        <h1 class="h3 mb-3 font-weight-normal">Mon profil</h1>
+        <label for="Pseudo">Pseudo</label>
+        <input type="text" value="{{ participant.username }}" name="Pseudo" id="Pseudo" class="form-control" autocomplete="username" required autofocus>
+
+
+        <label for="Pseudo">Prénom</label>
+        <input type="text" value="{{ participant.prenom }}" name="Prenom" id="Prenom" class="form-control" autocomplete="Prenom" required autofocus>
+
+
+        <label for="Pseudo">Nom</label>
+        <input type="text" value="{{ participant.nom }}" name="Nom" id="Nom" class="form-control" autocomplete="Nom" required autofocus>
+
+
+        <label for="Pseudo">Téléphone</label>
+        <input type="text" value="{{ participant.telephone }} " name="Telephone" id="Telephone" class="form-control" autocomplete="Telephone" required autofocus>
+
+
+        <label for="Pseudo">Email</label>
+        <input type="text" value="{{ participant.mail }}" name="Email" id="Email" class="form-control" autocomplete="Email" required autofocus>
+
+
+        <label for="password">Password</label>
+        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+
+        <label for="password">Confirmation</label>
+        <input type="password" name="Confirm_password" id="Confirm_password" class="form-control" autocomplete="Confirm_password" required>
+<br>
+<br>
+<br>
+        <button class="btn btn-lg btn-primary" type="submit">
+            Enregistrer
+        </button>
+        <button type="submit" class="btn btn-lg btn-danger">
+            Annuler
+        </button>
+    </form>
+{% endblock %}

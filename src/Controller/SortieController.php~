@@ -85,13 +85,25 @@ class SortieController extends AbstractController
             throw $this->createAccessDeniedException("Seul l'organisateur peut modifier la sortie");
         }
 
+        //Création du formulaire et association de l'entité .
         $sortieForm = $this->createForm(SortieType::class, $sortie);
+        //Récupère les données du formulaire et on les injecte dans notre $sortie.
         $sortieForm->handleRequest($request);
+        //On vérifie si le formulaire a été soumis et que les données soumises sont valides.
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+            //Hydrater les propriétés absentes du formulaire
+            $sortie->setDateUpdated(new \DateTimeImmutable());
+            $sortie->getParticipant()->setParticipantname($censurator->censure(($sortie->getParticipant()->getParticipantname())));
+            $sortie->setDescription($censurator->censure(($sortie->getDescription())));
+            $sortie->setTitle($censurator->censure(($sortie->getTitle())));
+            //Sauvegarde dans la Bdd
             $em->flush();
-            $this->addFlash('success', 'La sortie a bien été mise à jour');
+            //Affiche un message à l'utilisateur sur la prochaine page.
+            $this->addFlash('success', 'Your sortie has been updated!');
+            //Redirige vers la page de detail du sortie
             return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
         }
+        //Affiche le formulaire
         return $this->render('sortie/creation.html.twig', ["sortieForm" => $sortieForm]);
     }
 
@@ -108,7 +120,7 @@ class SortieController extends AbstractController
 
         //si je ne suis pas le proprio et que je ne suis pas admin alors je ne peux pas y accéder
         if(!($sortie->getOrganisateur() === $this->getUser())){
-            throw $this->createAccessDeniedException("Seul l'organisateur de la sortie peut supprimer ladite sortie");
+            throw $this->createAccessDeniedException("Seul l'organisateur de la sortie peut supprimer la dite sortie");
         }
 
         if ($this->isCsrfTokenValid('delete' . $sortie->getId(), $request->query->get('_token'))) {

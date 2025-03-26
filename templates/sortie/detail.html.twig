@@ -51,6 +51,10 @@
                     <a href="{{ path('sortie_inscription', {'id': sortie.id,'_token':csrf_token('inscription'~sortie.id)}) }}"
                        class="btn btn-primary mt-2" title="Je participe !">Je veux m'inscrire !</a>
                 {% endif %}
+                {% if app.user == sortie.organisateur %}
+                    <a href="{{ path('annulation', {'id': sortie.id,'_token':csrf_token('annulation'~sortie.id)}) }}"
+                       class="btn btn-primary mt-2" title="Annuler cet évenement">Je veux m'inscrire !</a>
+                {% endif %}
                 <a href="{{ path('sortie_update', {'id': sortie.id}) }}" class="btn btn-secondary mt-2" title="Modifier la sortie">Edit</a>
             </div>
 

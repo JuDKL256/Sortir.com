@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Participant;
 use App\Form\RegistrationFormType;
 use App\Repository\ParticipantRepository;
+use App\Services\Uploader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +20,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class ParticipantController extends AbstractController
 {
     #[Route('/profil', name: 'mon_profil', methods: ['GET', 'POST'])]
-    public function show(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    public function show(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher,
+        Uploader $uploader
+    ): Response
     {
         $participant = $this->getUser();
 
@@ -33,6 +40,17 @@ final class ParticipantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var UploadedFile|null $photoDeProfil
+             */
+            $photoDeProfil = $form->get('photoDeProfil')->getData();
+
+            if ($photoDeProfil instanceof UploadedFile) {
+                $participant->setPhotoProfile(
+                    $uploader->save($photoDeProfil, $participant->getId(), $this->getParameter('photoDeProfil_dir'))
+                );
+            }
+
             // Vérifiez si un nouveau mot de passe a été soumis
             $newPassword = $form->get('plainPassword')->getData();
             if ($newPassword) {
@@ -55,6 +73,15 @@ final class ParticipantController extends AbstractController
             'editMode' => $editMode,
         ]);
     }
+
+    #[Route('/profil/{id}', name: 'profil_utilisateur', methods: ['GET'])]
+    public function showUserProfile(Participant $participant): Response
+    {
+        return $this->render('participant/profil.html.twig', [
+            'participant' => $participant,
+        ]);
+    }
+
 }
 
 

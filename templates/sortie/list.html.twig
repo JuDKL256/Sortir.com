@@ -4,17 +4,24 @@
 
 {% block body %}
     <h2>Toutes les sorties !</h2>
-    <ul>
-        {% for sortie in sorties %}
-            <li>
-                <article>
-                    <a href="{{ path('sortie_detail', {'id': sortie.id}) }}"
-                       title="View this wish in details">{{ sortie.nom }} - {{ sortie.lieu.nom }} - {{ sortie.participants.count }} / {{ sortie.nbInscriptionMax }}</a>
 
-                </article>
-            </li>
+        {% for sortie in sorties %}
+            <div class="card mt-2 mb-2 w-50 m-auto">
+                <div class="card-body">
+
+                        <article>
+
+                                Sortie: <a href="{{ path('sortie_detail', {'id': sortie.id}) }}"
+                                           title="View this wish in details">  {{ sortie.nom }}</a> <br>
+                                Lieu:{{ sortie.lieu.nom }} <br>
+                                Nombre de participants:{{ sortie.participants.count }} / {{ sortie.nbInscriptionMax }}
+
+                        </article>
+
+                </div>
+            </div>
         {% else %}
             <li>Pas de sortie dans la bdd</li>
         {% endfor %}
-    </ul>
+
 {% endblock %}

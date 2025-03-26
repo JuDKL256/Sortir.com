@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="h3 mb-3 font-weight-normal">{{ participant.username }}</h1>
+
+            <p><strong>Pseudo :</strong> {{ participant.username }}</p>
+            <p><strong>Prénom :</strong> {{ participant.prenom }}</p>
+            <p><strong>Nom :</strong> {{ participant.nom }}</p>
+            <p><strong>Téléphone :</strong> {{ participant.telephone }}</p>
+            <p><strong>Email :</strong> {{ participant.mail }}</p>
+
+
+
+
+    </div>
+{% endblock %}

@@ -11,6 +11,10 @@
         {% endfor %}
 
         {% if not editMode %}
+            <div class="image-placeholder">
+                <img src="{{ asset('img/posters/series/' ~ participant.photoProfile) }}"/>
+            </div>
+
             <p><strong>Pseudo :</strong> {{ participant.username }}</p>
             <p><strong>Prénom :</strong> {{ participant.prenom }}</p>
             <p><strong>Nom :</strong> {{ participant.nom }}</p>
@@ -54,6 +58,35 @@
                 {{ form_label(form.plainPassword.second, 'Confirmer le mot de passe') }}
                 {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
             </div>
+<br>
+
+            <br>
+
+
+            <div class="image-placeholder">
+
+                <img id="imagePreview" src="#" alt="Aucune image disponible" style="display:none; max-width:200px;"/>
+
+                <input type="file"  name="avatar" accept="image/png, image/jpeg" onchange="previewImage(event)"/>
+
+                <script>
+                    function previewImage(event) {
+                        var reader = new FileReader();
+                        reader.onload = function(){
+                            var output = document.getElementById('imagePreview');
+                            output.src = reader.result;
+                            output.style.display = "block";
+                        };
+                        reader.readAsDataURL(event.target.files[0]);
+                    }
+                </script>
+                <div>
+                    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+                    {{ form_widget(form.photoDeProfil) }}
+
+                </div>
+
+            </div><br><br>
 
             <button type="submit" class="btn btn-success">Enregistrer</button>
             <a href="{{ path('mon_profil') }}" class="btn btn-danger">Annuler</a>

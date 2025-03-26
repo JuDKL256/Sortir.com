@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -17,7 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class ParticipantController extends AbstractController
 {
     #[Route('/profil', name: 'mon_profil', methods: ['GET', 'POST'])]
-    public function show(Request $request, EntityManagerInterface $entityManager): Response
+    public function show(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $participant = $this->getUser();
 
@@ -32,6 +33,13 @@ final class ParticipantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Vérifiez si un nouveau mot de passe a été soumis
+            $newPassword = $form->get('plainPassword')->getData();
+            if ($newPassword) {
+                // Hash et définissez le nouveau mot de passe
+                $hashedPassword = $passwordHasher->hashPassword($participant, $newPassword);
+                $participant->setPassword($hashedPassword);
+            }
 
             $entityManager->persist($participant);
             $entityManager->flush();
@@ -39,9 +47,7 @@ final class ParticipantController extends AbstractController
             $this->addFlash('success', 'Profil mis à jour avec succès');
 
             return $this->redirectToRoute('mon_profil');
-
         }
-
 
         return $this->render('participant/monProfil.html.twig', [
             'participant' => $participant,
@@ -50,4 +56,5 @@ final class ParticipantController extends AbstractController
         ]);
     }
 }
+
 

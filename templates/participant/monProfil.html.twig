@@ -1,44 +1,63 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Mon Profil{% endblock %}
 
 {% block body %}
-    <form >
-
+    <div class="container">
         <h1 class="h3 mb-3 font-weight-normal">Mon profil</h1>
-        <label for="Pseudo">Pseudo</label>
-        <input type="text" value="{{ participant.username }}" name="Pseudo" id="Pseudo" class="form-control" autocomplete="username" required autofocus>
 
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
 
-        <label for="Pseudo">Prénom</label>
-        <input type="text" value="{{ participant.prenom }}" name="Prenom" id="Prenom" class="form-control" autocomplete="Prenom" required autofocus>
+        {% if not editMode %}
+            <p><strong>Pseudo :</strong> {{ participant.username }}</p>
+            <p><strong>Prénom :</strong> {{ participant.prenom }}</p>
+            <p><strong>Nom :</strong> {{ participant.nom }}</p>
+            <p><strong>Téléphone :</strong> {{ participant.telephone }}</p>
+            <p><strong>Email :</strong> {{ participant.mail }}</p>
 
+            <a href="?edit=1" class="btn btn-primary">Modifier mon profil</a>
+        {% else %}
+            {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_label(form.username, 'Pseudo') }}
+                {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+            </div>
 
-        <label for="Pseudo">Nom</label>
-        <input type="text" value="{{ participant.nom }}" name="Nom" id="Nom" class="form-control" autocomplete="Nom" required autofocus>
+            <div class="form-group">
+                {{ form_label(form.prenom, 'Prénom') }}
+                {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+            </div>
 
+            <div class="form-group">
+                {{ form_label(form.nom, 'Nom') }}
+                {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+            </div>
 
-        <label for="Pseudo">Téléphone</label>
-        <input type="text" value="{{ participant.telephone }} " name="Telephone" id="Telephone" class="form-control" autocomplete="Telephone" required autofocus>
+            <div class="form-group">
+                {{ form_label(form.telephone, 'Téléphone') }}
+                {{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
+            </div>
 
+            <div class="form-group">
+                {{ form_label(form.mail, 'Email') }}
+                {{ form_widget(form.mail, {'attr': {'class': 'form-control'}}) }}
+            </div>
 
-        <label for="Pseudo">Email</label>
-        <input type="text" value="{{ participant.mail }}" name="Email" id="Email" class="form-control" autocomplete="Email" required autofocus>
+            <div class="form-group">
+                {{ form_label(form.plainPassword.first, 'Nouveau mot de passe') }}
+                {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+            </div>
 
+            <div class="form-group">
+                {{ form_label(form.plainPassword.second, 'Confirmer le mot de passe') }}
+                {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+            </div>
 
-        <label for="password">Password</label>
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-
-        <label for="password">Confirmation</label>
-        <input type="password" name="Confirm_password" id="Confirm_password" class="form-control" autocomplete="Confirm_password" required>
-<br>
-<br>
-<br>
-        <button class="btn btn-lg btn-primary" type="submit">
-            Enregistrer
-        </button>
-        <button type="submit" class="btn btn-lg btn-danger">
-            Annuler
-        </button>
-    </form>
+            <button type="submit" class="btn btn-success">Enregistrer</button>
+            <a href="{{ path('mon_profil') }}" class="btn btn-danger">Annuler</a>
+            {{ form_end(form) }}
+        {% endif %}
+    </div>
 {% endblock %}

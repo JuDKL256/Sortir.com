@@ -11,38 +11,43 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_USER')]
 final class ParticipantController extends AbstractController
 {
-    #[Route('/profil', name: 'mon_profil',methods: ['GET','POST'])]
-    public function index(EntityManagerInterface $entityManager,Request $request
-    ): Response
+    #[Route('/profil', name: 'mon_profil', methods: ['GET', 'POST'])]
+    public function show(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Récupérer le participant actuellement connecté
         $participant = $this->getUser();
 
-        // Créer le formulaire
-        $form = $this->createForm(RegistrationFormType::class, $participant);
+        if (!$participant) {
+            throw $this->createNotFoundException('Utilisateur non trouvé');
+        }
 
-        // Traiter le formulaire lorsqu'il est soumis
+        $editMode = $request->query->get('edit') === '1';
+
+        // Création du formulaire de modification du profil
+        $form = $this->createForm(RegistrationFormType::class, $participant);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            // Enregistrer les modifications dans la base de données
+
             $entityManager->persist($participant);
             $entityManager->flush();
 
-            // Rediriger ou afficher un message de succès
-            $this->addFlash('success', 'Profil mis à jour avec succès.');
+            $this->addFlash('success', 'Profil mis à jour avec succès');
 
             return $this->redirectToRoute('mon_profil');
-        }else {
-            $this->addFlash('error','erreur dans la maj du profil');
-            }
 
-        // Afficher le formulaire
+        }
+
+
         return $this->render('participant/monProfil.html.twig', [
             'participant' => $participant,
             'form' => $form->createView(),
+            'editMode' => $editMode,
         ]);
     }
 }
+

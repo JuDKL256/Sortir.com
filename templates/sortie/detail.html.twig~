@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail {{ sortie.nom }} | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="card mt-2 mb-2 w-50 m-auto">
+        <div class="card-body">
+            <h5 class="card-title">{{ sortie.nom }}</h5>
+            <p class="card-title">[{{ sortie.lieu.nom }}]</p>
+            <p class="wish-credit">Created By : {{ sortie.organisateur.nom }} on {{ sortie.dateHeureDebut | date('Y-m-d H:i') }}</p>
+            {# le filtre nl2br convertit les sauts de ligne du texte en balises <br #}
+            <p class="card-text">Description: {{ sortie.infosSortie }}</p>
+
+                <table>
+                    <caption>Participants :</caption>
+                    <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prenom</th>
+                        <th>Pseudo</th>
+                        <th>Site</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for participant in sortie.participants %}
+                        <tr>
+                            <td>{{ participant.nom }}</td>
+                            <td>{{ participant.prenom }}</td>
+                            <td>{{ participant.username }}</td>
+                            <td>{{ participant.site.nom }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+
+
+            <div class="text-center">
+
+                {#                {% if wish.user == app.user or is_granted("ROLE_ADMIN") %}#}
+{#                {% if is_granted("WISH_DELETE", wish) %}#}
+                    <a href="{{ path('sortie_delete', {'id': sortie.id,'_token':csrf_token('delete'~sortie.id)}) }}"
+                       class="btn btn-danger mt-2"
+                       title="Supprimer la sortie">Delete</a>
+{#                {% endif %}#}
+                {% if app.user in sortie.participants %}
+                    <a href="{{ path('desinscription', {'id': sortie.id,'_token':csrf_token('desinscription'~sortie.id)}) }}"
+                       class="btn btn-danger mt-2" title="Je ne participe plus !">Je ne participe plus !</a>
+                {% endif %}
+                {% if sortie.participants.count < sortie.nbInscriptionMax and sortie.organisateur != app.user and app.user not in sortie.participants %}
+                    <a href="{{ path('sortie_inscription', {'id': sortie.id,'_token':csrf_token('inscription'~sortie.id)}) }}"
+                       class="btn btn-primary mt-2" title="Je participe !">Je veux m'inscrire !</a>
+                {% endif %}
+                {% if app.user == sortie.organisateur %}
+                    <a href="{{ path('annulation', {'id': sortie.id,'_token':csrf_token('annulation'~sortie.id)}) }}"
+                       class="btn btn-primary mt-2" title="Annuler cet évenement">Je veux m'inscrire !</a>
+                {% endif %}
+                <a href="{{ path('sortie_update', {'id': sortie.id}) }}" class="btn btn-secondary mt-2" title="Modifier la sortie">Edit</a>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

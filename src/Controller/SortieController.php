@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Form\SearchType;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManager;
@@ -18,13 +19,34 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class SortieController extends AbstractController
 {
     #[Route('/sorties', name: 'sortie_list', methods: ['GET'])]
-    public function list(SortieRepository $sortieRepository
+    public function list(Request $request, SortieRepository $sortieRepository
     ): Response
     {
+        $user = $this->getUser(); // Récupère l'utilisateur connecté
+        $searchForm = $this->createForm(SearchType::class);
+        $searchForm->handleRequest($request);
 
-        $sorties = $sortieRepository
-            ->findAll();
-        return $this->render('sortie/list.html.twig', ["sorties" => $sorties]);
+        $sorties = [];
+        if (!($searchForm->isEmpty())) {
+            $filters = $searchForm->getData();
+            dump($filters);
+            $sorties = $sortieRepository->rechercheSorties($filters, $user);
+            dump($sorties);
+        } else {
+            // Par défaut, charger toutes les sorties à venir
+            $sorties = $sortieRepository->findAll();
+        }
+
+        return $this->render('sortie/list.html.twig', [
+            'searchForm' => $searchForm->createView(),
+            'sorties' => $sorties
+        ]);
+
+
+
+//        $sorties = $sortieRepository
+//            ->findAll();
+//        return $this->render('sortie/list.html.twig', ["sorties" => $sorties]);
     }
 
     #[Route('/sorties/{id}', name: 'sortie_detail', requirements: ['id' => '\d+'], methods: ['GET'])]

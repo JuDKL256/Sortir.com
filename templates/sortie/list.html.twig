@@ -1,27 +1,78 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Toutes les sorties ! | {{ parent() }}{% endblock %}
-
 {% block body %}
-    <h2>Toutes les sorties !</h2>
+    <div class="sortie-search-container">
+        <h1>Filtrer les sorties</h1>
 
-        {% for sortie in sorties %}
-            <div class="card mt-2 mb-2 w-50 m-auto">
-                <div class="card-body">
+        {{ form_start(searchForm, {'attr': {'class': 'search-form'}}) }}
 
-                        <article>
+        <div class="form-row">
+            {{ form_label(searchForm.site) }}
+            {{ form_widget(searchForm.site) }}
+        </div>
 
-                                Sortie: <a href="{{ path('sortie_detail', {'id': sortie.id}) }}"
-                                           title="View this wish in details">  {{ sortie.nom }}</a> <br>
-                                Lieu:{{ sortie.lieu.nom }} <br>
-                                Nombre de participants:{{ sortie.participants.count }} / {{ sortie.nbInscriptionMax }}
+        <div class="form-row">
+            {{ form_label(searchForm.nom) }}
+            {{ form_widget(searchForm.nom) }}
+        </div>
 
-                        </article>
+        <div class="form-row date-range">
+            {{ form_label(searchForm.dateDebut) }}
+            {{ form_widget(searchForm.dateDebut) }}
+            {{ form_label(searchForm.dateFin) }}
+            {{ form_widget(searchForm.dateFin) }}
+        </div>
 
-                </div>
-            </div>
-        {% else %}
-            <li>Pas de sortie dans la bdd</li>
-        {% endfor %}
+        <div class="form-row checkboxes">
+            {{ form_widget(searchForm.organisateur) }}
+            {{ form_label(searchForm.organisateur) }}
 
+            {{ form_widget(searchForm.inscrit) }}
+            {{ form_label(searchForm.inscrit) }}
+
+            {{ form_widget(searchForm.nonInscrit) }}
+            {{ form_label(searchForm.nonInscrit) }}
+
+            {{ form_widget(searchForm.sortiesPassees) }}
+            {{ form_label(searchForm.sortiesPassees) }}
+        </div>
+
+        {{ form_widget(searchForm.rechercher, {'attr': {'class': 'btn btn-primary'}}) }}
+
+        {{ form_end(searchForm) }}
+
+        <table class="sorties-table">
+            <thead>
+            <tr>
+                <th>Nom de la sortie</th>
+                <th>Site de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Clôture</th>
+                <th>Inscrits/places</th>
+                <th>Etat</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for sortie in sorties %}
+                <tr>
+                    <td>{{ sortie.nom }}</td>
+                    <td>{{ sortie.site.nom }}</td>
+                    <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
+                    <td>{{ sortie.dateLimiteInscription|date('d/m/Y') }}</td>
+                    <td>{{ sortie.Participants|length }}/{{ sortie.nbInscriptionMax }}</td>
+                    <td>{{ sortie.etat.libelle }}</td>
+                    <td>{% if app.user in sortie.Participants %}X{% endif %}</td>
+                    <td>{{ sortie.Organisateur.username }}</td>
+                    <td>
+                        <a href="{{ path('sortie_detail', {'id': sortie.id}) }}">Afficher</a>
+                        {# Ajoutez d'autres actions selon les permissions #}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

@@ -20,32 +20,40 @@
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('mon_profil') }}"
-                           title="About us">Mon profil</a>
+                           title="Mon profil">Mon profil</a>
                     </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('sortie_list') }}"
-                       title="All things to do">Les sorties disponibles</a>
+                       title="Les sorties disponibles">Les sorties disponibles</a>
                 </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('sortie_create') }}"
-                           title="Add your ideas">Créer une sortie ! </a>
+                           title="Créer une sortie">Créer une sortie ! </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_logout') }}"
-                           title="Sign out">Sign out</a>
+                           title="Se déconnecter">Se déconnecter</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_login') }}"
-                           title="Sign in">Sign in</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_register') }}"
-                           title="Register">Register</a>
+                           title="Se connecter">Se connecter</a>
                     </li>
                 {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_register') }}"
+                           title="Register">Enregistrer un utilisateur</a>
+                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('list_users') }}"
+                               title="Register">Liste des utilisateurs</a>
+                        </li>
+
+                    {% endif %}
+
             </ul>
         </div>
     </div>

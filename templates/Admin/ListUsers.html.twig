@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <h2>Ceci est la liste des utilisateurs</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Pseudo</th>
+            <th>Téléphone</th>
+            <th>Email</th>
+            <th>Site de rattachement</th>
+            <th>Est actif</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td><a href="{{ path('profil_utilisateur', {id: user.id}) }}">{{user.prenom}}</td>
+                <td>{{user.nom}}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.telephone }}</td>
+                <td>{{ user.mail }}</td>
+                <td>{{ user.site.nom }}</td>
+                <td>
+                    <span class="status-indicator {{ user.actif ? 'actif' : 'inactif' }}"></span>
+                </td>
+
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -19,6 +19,17 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
         parent::__construct($registry, Participant::class);
     }
 
+    public function loadUserByUsername(string $usernameOrMail): ?Participant
+    {
+        $user = $this->createQueryBuilder('p')
+            ->where('p.username = :query OR p.mail = :query')
+            ->setParameter('query', $usernameOrMail)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $user;
+    }
+
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
@@ -57,4 +68,6 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+
 }

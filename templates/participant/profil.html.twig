@@ -6,14 +6,26 @@
     <div class="container">
         <h1 class="h3 mb-3 font-weight-normal">{{ participant.username }}</h1>
 
+        <div class="image-placeholder">
+            <img src="{{ asset('img/photoDeProfil/' ~ participant.photoProfile) }}"/>
+        </div>
+
             <p><strong>Pseudo :</strong> {{ participant.username }}</p>
             <p><strong>Prénom :</strong> {{ participant.prenom }}</p>
             <p><strong>Nom :</strong> {{ participant.nom }}</p>
             <p><strong>Téléphone :</strong> {{ participant.telephone }}</p>
             <p><strong>Email :</strong> {{ participant.mail }}</p>
 
-
-
-
+        {% if is_granted('ROLE_ADMIN') %}
+            <p><strong>Status :</strong>
+                <span class="status-indicator {{ participant.actif ? 'actif' : 'inactif' }}"></span>
+            </p>
+            <a href="{{ path('toggle_status', {'id': participant.id}) }}" class="btn btn-lg btn-primary">
+                {{ participant.actif ? 'Désactiver' : 'Activer' }} l'utilisateur
+            </a>
+            <a href="{{ path('delete', {'id': participant.id}) }}" class="btn btn-lg btn-danger" type="submit">
+                Supprimer l'utilisateur
+            </a>
+        {% endif %}
     </div>
 {% endblock %}

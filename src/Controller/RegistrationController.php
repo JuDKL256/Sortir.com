@@ -10,12 +10,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_USER')]
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+//        dd('toto');
         $user = new Participant();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -30,13 +33,28 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Inscription effectuée !');
+
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('_profiler_home');
+            return $this->redirectToRoute('app_acceuil');
         }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form,
         ]);
     }
+
+
+
+
+
+
+
+
+
+
 }
+
+
+

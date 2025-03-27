@@ -9,6 +9,7 @@ use App\Services\Uploader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,10 +22,10 @@ final class ParticipantController extends AbstractController
 {
     #[Route('/profil', name: 'mon_profil', methods: ['GET', 'POST'])]
     public function show(
-        Request $request,
-        EntityManagerInterface $entityManager,
+        Request                     $request,
+        EntityManagerInterface      $entityManager,
         UserPasswordHasherInterface $passwordHasher,
-        Uploader $uploader
+        Uploader                    $uploader
     ): Response
     {
         $participant = $this->getUser();
@@ -82,6 +83,48 @@ final class ParticipantController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/list_users', name: 'list_users', methods: ['GET'])]
+    public function listUsers(ParticipantRepository $participantRepository): Response
+    {
+        $users = $participantRepository->findAll();
+        return $this->render('Admin/listUsers.html.twig', [
+            'users' => $users,
+        ]);
+    }
+
+    #[Route('/toggle-status/{id}', name: "toggle_status", methods: ['GET', 'POST'])]
+    public function toggleStatus(Participant $participant, EntityManagerInterface $entityManager): RedirectResponse
+    {
+        $participant->setActif(!$participant->isActif());
+
+        $entityManager->persist($participant);
+        $entityManager->flush();
+
+        // Redirige vers la page de profil ou une autre page appropriée
+        return $this->redirectToRoute('profil_utilisateur', ['id' => $participant->getId()]);
+    }
+
+    #[Route('/delete/{id}', name:'delete',requirements: ['id'=>'\d+'],methods: ['GET','POST'])]
+    public function delete(int $id,Participant $participant,
+                           EntityManagerInterface $entityManager,
+                            ParticipantRepository $participantRepository,
+    ):Response{
+
+        $participant=$participantRepository->find($id);
+          $entityManager->remove($participant);
+//          $entityManager->persist($participant);
+          $entityManager->flush();
+
+        $this->addFlash('success', 'Profil supprimer avec succès');
+
+        return $this->redirectToRoute('list_users');
+
+    }
+
 }
+
+
+
 
 

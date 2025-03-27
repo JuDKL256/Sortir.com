@@ -3,13 +3,15 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
+    {% if is_granted('ROLE_ADMIN') %}
     <h1 class="h3 mb-3 font-weight-normal">Register</h1>
 
-    {{ form_errors(registrationForm) }}
+
 
     {{ form_start(registrationForm) }}
         {{ form_widget(registrationForm) }}
 
         <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}
+    {% endif %}
 {% endblock %}

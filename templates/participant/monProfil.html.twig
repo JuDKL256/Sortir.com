@@ -12,7 +12,7 @@
 
         {% if not editMode %}
             <div class="image-placeholder">
-                <img src="{{ asset('img/posters/series/' ~ participant.photoProfile) }}"/>
+                <img src="{{ asset('img/photoDeProfil/' ~ participant.photoProfile) }}"/>
             </div>
 
             <p><strong>Pseudo :</strong> {{ participant.username }}</p>
@@ -33,7 +33,7 @@
                 {{ form_label(form.prenom, 'Prénom') }}
                 {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
             </div>
-
+            jojo@jojo.fr
             <div class="form-group">
                 {{ form_label(form.nom, 'Nom') }}
                 {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}

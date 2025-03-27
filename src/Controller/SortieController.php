@@ -8,13 +8,11 @@ use App\Entity\Sortie;
 use App\Form\SearchType;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class SortieController extends AbstractController
 {
@@ -63,6 +61,33 @@ class SortieController extends AbstractController
         }
         return $this->render('sortie/detail.html.twig', ["sortie" => $sortie]);
     }
+
+    #[Route('/sorties/archives', name: 'sortie_archives', methods: ['GET'])]
+    public function archive(Request $request, SortieRepository $sortieRepository
+    ): Response
+    {
+        $user = $this->getUser(); // Récupère l'utilisateur connecté
+        $searchForm = $this->createForm(SearchType::class);
+        $searchForm->handleRequest($request);
+
+        $sorties = [];
+        if (!($searchForm->isEmpty())) {
+            $filters = $searchForm->getData();
+            dump($filters);
+            $sorties = $sortieRepository->rechercheSorties($filters, $user)->findSortiesFromLastMonth();
+            dump($sorties);
+        } else {
+            // Par défaut, charger toutes les sorties à venir
+            $sorties = $sortieRepository->findSortiesFromLastMonth();
+        }
+
+        return $this->render('sortie/list.html.twig', [
+            'searchForm' => $searchForm->createView(),
+            'sorties' => $sorties
+        ]);
+
+    }
+
 
     #[Route('/sorties/create', name: 'sortie_create', methods: ['GET', 'POST'])]
     public function create(Request $request, EntityManagerInterface $em): Response

@@ -21,6 +21,14 @@ class SortieRepository extends ServiceEntityRepository
             ->leftJoin('sortie.Organisateur', 'organisateur')
             ->leftJoin('sortie.Participants', 'participants');
 
+        $currentDate = new \DateTime();
+        $oneMonthAgo = (clone $currentDate)->modify('-1 month');
+
+        // Filtrage de base pour n'afficher que les sorties consultables
+        $qb->andWhere('(sortie.dateHeureDebut >= :oneMonthAgo AND sortie.dateHeureDebut <= :now)')
+            ->setParameter('oneMonthAgo', $oneMonthAgo)
+            ->setParameter('now', $currentDate);
+
         // Filtrage par site
         if (!empty($filters['site'])) {
             $qb->andWhere('sortie.Site = :site')
@@ -65,6 +73,18 @@ class SortieRepository extends ServiceEntityRepository
         }
 
         return $qb->orderBy('sortie.dateHeureDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findSortiesFromLastMonth()
+    {
+        $oneMonthAgo = new \DateTime();
+        $oneMonthAgo->modify('-1 month');
+
+        return $this->createQueryBuilder('s')
+            ->where('s.dateHeureDebut <= :oneMonthAgo')
+            ->setParameter('oneMonthAgo', $oneMonthAgo)
             ->getQuery()
             ->getResult();
     }

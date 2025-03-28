@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="alert alert-warning">
+            <h2>Compte Inactif</h2>
+            <p>{{ error_message }}</p>
+            <p>Veuillez contacter l'administrateur pour plus d'informations.</p>
+            <a href="{{ path('app_login') }}" class="btn btn-primary">Retour à la connexion</a>
+        </div>
+    </div>
+{% endblock %}

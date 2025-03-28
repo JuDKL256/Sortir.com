@@ -9,6 +9,8 @@ use App\Entity\Site;
 use App\Entity\Sortie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Date;
@@ -19,12 +21,14 @@ class SortieType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('dateHeureDebut', null, [
-                'widget' => 'choice',
+            ->add('dateHeureDebut', DateTimeType::class, [
+                'widget' => 'single_text',
+                'attr' => ['class' => 'js-datepicker'],
             ])
             ->add('duree')
-            ->add('dateLimiteInscription', null, [
-                'widget' => 'choice',
+            ->add('dateLimiteInscription', DateType::class, [
+                'widget' => 'single_text',
+                'attr' => ['class' => 'js-datepicker'],
             ])
             ->add('nbInscriptionMax')
             ->add('infosSortie')

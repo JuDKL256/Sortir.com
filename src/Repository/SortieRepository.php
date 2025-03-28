@@ -21,13 +21,9 @@ class SortieRepository extends ServiceEntityRepository
             ->leftJoin('sortie.Organisateur', 'organisateur')
             ->leftJoin('sortie.Participants', 'participants');
 
-        $currentDate = new \DateTime();
-        $oneMonthAgo = (clone $currentDate)->modify('-1 month');
-
-        // Filtrage de base pour n'afficher que les sorties consultables
-        $qb->andWhere('(sortie.dateHeureDebut >= :oneMonthAgo AND sortie.dateHeureDebut <= :now)')
-            ->setParameter('oneMonthAgo', $oneMonthAgo)
-            ->setParameter('now', $currentDate);
+        // Ajout d'une condition pour n'afficher que les sorties non commencées par défaut
+        $qb->andWhere('sortie.dateHeureDebut > :now')
+            ->setParameter('now', new \DateTime());
 
         // Filtrage par site
         if (!empty($filters['site'])) {
@@ -37,7 +33,7 @@ class SortieRepository extends ServiceEntityRepository
 
         // Filtrage par nom
         if (!empty($filters['nom'])) {
-            $qb->andWhere('sortie.nom LIKE :nom')
+            $qb->andWhere('sortie.nom LIKE :nom OR sortie.infosSortie LIKE :nom')
                 ->setParameter('nom', '%' . $filters['nom'] . '%');
         }
 
@@ -66,9 +62,13 @@ class SortieRepository extends ServiceEntityRepository
                 ->setParameter('user', $user);
         }
 
-        // Sorties passées
+        // Sorties passées (jusqu'à un mois après la date de début)
         if (!empty($filters['sortiesPassees'])) {
-            $qb->andWhere('sortie.dateHeureDebut < :now')
+            $oneMonthAgo = new \DateTime();
+            $oneMonthAgo->sub(new \DateInterval('P1M'));
+
+            $qb->andWhere('sortie.dateHeureDebut BETWEEN :oneMonthAgo AND :now')
+                ->setParameter('oneMonthAgo', $oneMonthAgo)
                 ->setParameter('now', new \DateTime());
         }
 
@@ -77,14 +77,14 @@ class SortieRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findSortiesFromLastMonth()
+    public function findSortiesArchived()
     {
-        $oneMonthAgo = new \DateTime();
-        $oneMonthAgo->modify('-1 month');
+        $currentDate = new \DateTime();
+        $currentDate->modify('-1 month');
 
         return $this->createQueryBuilder('s')
-            ->where('s.dateHeureDebut <= :oneMonthAgo')
-            ->setParameter('oneMonthAgo', $oneMonthAgo)
+            ->where('s.dateHeureDebut >= :oneMonthAgo')
+            ->setParameter('oneMonthAgo', $currentDate)
             ->getQuery()
             ->getResult();
     }

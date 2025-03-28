@@ -58,7 +58,7 @@ class SearchType extends AbstractType
 
             ])
             ->add('sortiesPassees', CheckboxType::class, [
-                'label' => 'Sorties passées',
+                'label' => 'Sorties archivées',
                 'required' => false,
 
             ])

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -25,6 +26,17 @@ class SecurityController extends AbstractController
         ]);
     }
 
+    #[Route(path: 'compte_inactif', name: 'compte_inactif')]
+    public function compteInactif(Request $request): Response
+    {
+        $message = $request->getSession()->get('compte_inactif_message', 'Votre compte est inactif');
+
+        $request->getSession()->remove('compte_inactif_message');
+
+        return $this->render('security/compte_inactif.html.twig', [
+            'error_message' => $message,
+        ]);
+    }
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {

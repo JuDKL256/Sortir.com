@@ -65,6 +65,9 @@ class Sortie
     #[ORM\JoinColumn(nullable: false)]
     private ?Etat $etat = null;
 
+    #[ORM\OneToOne(mappedBy: 'sortie', cascade: ['persist', 'remove'])]
+    private ?MotifAnnulation $motifAnnulation = null;
+
 
 
     public function __construct()
@@ -218,6 +221,23 @@ class Sortie
     public function setEtat(?Etat $etat): static
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getMotifAnnulation(): ?MotifAnnulation
+    {
+        return $this->motifAnnulation;
+    }
+
+    public function setMotifAnnulation(MotifAnnulation $motifAnnulation): static
+    {
+        // set the owning side of the relation if necessary
+        if ($motifAnnulation->getSortie() !== $this) {
+            $motifAnnulation->setSortie($this);
+        }
+
+        $this->motifAnnulation = $motifAnnulation;
 
         return $this;
     }

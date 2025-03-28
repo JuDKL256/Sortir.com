@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\MotifAnnulation;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\SearchType;
@@ -62,31 +63,6 @@ class SortieController extends AbstractController
         return $this->render('sortie/detail.html.twig', ["sortie" => $sortie]);
     }
 
-    #[Route('/sorties/archives', name: 'sortie_archives', methods: ['GET'])]
-    public function archive(Request $request, SortieRepository $sortieRepository
-    ): Response
-    {
-        $user = $this->getUser(); // Récupère l'utilisateur connecté
-        $searchForm = $this->createForm(SearchType::class);
-        $searchForm->handleRequest($request);
-
-        $sorties = [];
-        if (!($searchForm->isEmpty())) {
-            $filters = $searchForm->getData();
-            dump($filters);
-            $sorties = $sortieRepository->rechercheSorties($filters, $user)->findSortiesFromLastMonth();
-            dump($sorties);
-        } else {
-            // Par défaut, charger toutes les sorties à venir
-            $sorties = $sortieRepository->findSortiesFromLastMonth();
-        }
-
-        return $this->render('sortie/list.html.twig', [
-            'searchForm' => $searchForm->createView(),
-            'sorties' => $sorties
-        ]);
-
-    }
 
 
     #[Route('/sorties/create', name: 'sortie_create', methods: ['GET', 'POST'])]
@@ -181,7 +157,7 @@ class SortieController extends AbstractController
         if ($sortie->getParticipants()->contains($this->getUser())) {
             $this->addFlash('fail', 'Tu es déjà inscris !');
         }
-        elseif ($this->getUser() instanceof Participant and $sortie->getNbInscriptionMax() > $sortie->getParticipants()->count()) {
+        elseif ($this->getUser() instanceof Participant and $sortie->getNbInscriptionMax() > $sortie->getParticipants()->count() and $sortie->getDateLimiteInscription() > new \DateTime()) {
 
             $sortie->addParticipant($this->getUser());
             $em->flush();
@@ -216,8 +192,10 @@ class SortieController extends AbstractController
 
     #[Route('/sorties/{id}/annulation', name: 'annulation', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
 //    #[IsGranted('WISH_EDIT', 'sortie')]
-    public function annulation(Sortie $sortie, Request $request, EntityManagerInterface $em): Response
+    public function annulation(Sortie $sortie, MotifAnnulation $motif, Request $request, EntityManagerInterface $em): Response
     {
+        $motif->setSortie($sortie);
+        $motiForm = $this->createForm(MotifAnnulationType::class, $motif);
 
         if (!$sortie) {
             throw $this->createNotFoundException('Pardon, mais cette sortie n\'existe pas !' );
@@ -225,11 +203,12 @@ class SortieController extends AbstractController
 
         $sortie = $em->getRepository(Sortie::class)->find($sortie->getId());
         if ($sortie->getOrganisateur() == ($this->getUser())) {
+
             $em->remove($sortie, true);
             $em->flush();
             $this->addFlash('success', 'Cette sortie a été annulée !');
         }
 
-        return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
+        return $this->redirectToRoute('sortie_list', ['id' => $sortie->getId()]);
     }
 }

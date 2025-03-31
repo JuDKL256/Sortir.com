@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+        <table class="sorties-table">
+            <thead>
+            <tr>
+                <th>Nom du lieu</th>
+                <th>Rue du lieu</th>
+                <th>Ville de la sortie</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for lieu in lieux %}
+                    <tr>
+                        <td>{{ lieu.nom }}</td>
+                        <td>{{ lieu.rue }}</td>
+                        <td>{{ lieu.ville.nom }}</td>
+                    </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}

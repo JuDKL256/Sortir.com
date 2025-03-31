@@ -1,44 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="sortie-search-container">
-        <h1>Filtrer les sorties</h1>
-
-        {{ form_start(searchForm, {'attr': {'class': 'search-form'}}) }}
-
-        <div class="form-row">
-            {{ form_label(searchForm.site) }}
-            {{ form_widget(searchForm.site) }}
-        </div>
-
-        <div class="form-row">
-            {{ form_label(searchForm.nom) }}
-            {{ form_widget(searchForm.nom) }}
-        </div>
-
-        <div class="form-row date-range">
-            {{ form_label(searchForm.dateDebut) }}
-            {{ form_widget(searchForm.dateDebut) }}
-            {{ form_label(searchForm.dateFin) }}
-            {{ form_widget(searchForm.dateFin) }}
-        </div>
-
-        <div class="form-row checkboxes">
-            {{ form_widget(searchForm.organisateur) }}
-            {{ form_label(searchForm.organisateur) }}
-
-            {{ form_widget(searchForm.inscrit) }}
-            {{ form_label(searchForm.inscrit) }}
-
-            {{ form_widget(searchForm.nonInscrit) }}
-            {{ form_label(searchForm.nonInscrit) }}
-
-        </div>
-
-        {{ form_widget(searchForm.rechercher, {'attr': {'class': 'btn btn-primary'}}) }}
-
-        {{ form_end(searchForm) }}
-
         <table class="sorties-table">
             <thead>
             <tr>
@@ -55,6 +17,7 @@
             </thead>
             <tbody>
             {% for sortie in sorties %}
+                {% if sortie.motifAnnulation != null %}
                 <tr>
                     <td>{{ sortie.nom }}</td>
                     <td>{{ sortie.site.nom }}</td>
@@ -68,7 +31,9 @@
                         <a href="{{ path('sortie_detail', {'id': sortie.id}) }}">Afficher</a>
                         {# Ajoutez d'autres actions selon les permissions #}
                     </td>
+
                 </tr>
+                {% endif %}
             {% endfor %}
             </tbody>
         </table>

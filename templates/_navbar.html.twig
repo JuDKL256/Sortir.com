@@ -36,6 +36,22 @@
                         <a class="nav-link" href="{{ path('app_logout') }}"
                            title="Se déconnecter">Se déconnecter</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('lieu_create') }}"
+                           title="Ajouter un lieu">Ajouter un lieu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('lieu_list') }}"
+                           title="Liste des lieux">Les lieux</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('ville_create') }}"
+                           title="Ajouter une ville">Ajouter une ville</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('ville_list') }}"
+                           title="Liste des villes">Les villes</a>
+                    </li>
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_login') }}"
@@ -49,7 +65,11 @@
                     </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('list_users') }}"
-                               title="Register">Liste des utilisateurs</a>
+                               title="UsersList">Liste des utilisateurs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('sortie_cancelled') }}"
+                               title="Cancelled">Liste des sorties annulées</a>
                         </li>
 
                     {% endif %}

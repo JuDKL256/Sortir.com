@@ -30,6 +30,25 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
         return $user;
     }
 
+    public function findByPseudoOrEmail(string $login): ?Participant
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.username = :login')
+            ->orWhere('p.mail = :login')
+            ->setParameter('login', $login)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findByEmail(string $email): ?Participant
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.mail = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */

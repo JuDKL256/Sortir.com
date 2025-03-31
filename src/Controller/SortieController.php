@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\MotifAnnulation;
 use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Form\MotifAnnulationType;
 use App\Form\SearchType;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
@@ -194,8 +195,16 @@ class SortieController extends AbstractController
 //    #[IsGranted('WISH_EDIT', 'sortie')]
     public function annulation(Sortie $sortie, MotifAnnulation $motif, Request $request, EntityManagerInterface $em): Response
     {
+
         $motif->setSortie($sortie);
-        $motiForm = $this->createForm(MotifAnnulationType::class, $motif);
+        dd($sortie);
+        $motifForm = $this->createForm(MotifAnnulationType::class, $motif);
+
+        $motifForm->handleRequest($request);
+
+
+
+
 
         if (!$sortie) {
             throw $this->createNotFoundException('Pardon, mais cette sortie n\'existe pas !' );

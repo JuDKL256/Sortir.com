@@ -6,9 +6,9 @@ security:
     providers:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
-            entity:
-                class: App\Entity\Participant
-                property: username
+            id: App\Security\UserProvider
+
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -19,6 +19,7 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
+                username_parameter: _username
                 enable_csrf: true
             user_checker: App\Security\ParticipantChecker
 

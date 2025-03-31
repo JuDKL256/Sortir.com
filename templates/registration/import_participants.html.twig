@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Import de participants{% endblock %}
+
+{% block body %}
+    <h1>Importer des participants depuis un fichier CSV</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Instructions</h5>
+            <p>Veuillez télécharger un fichier CSV avec les colonnes suivantes :</p>
+            <ul>
+                <li> Username;Prenom;Nom;Email;Telephone</li>
+
+
+
+
+                {# Ajoutez d'autres instructions selon votre structure de données #}
+            </ul>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        {{ form_start(form) }}
+        {{ form_row(form.csvFile) }}
+        {{ form_row(form.site) }}
+        {{ form_row(form.password) }}
+        <button type="submit" class="btn btn-primary">Importer</button>
+        {{ form_end(form) }}
+
+    </div>
+{% endblock %}

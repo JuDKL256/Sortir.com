@@ -1,5 +1,9 @@
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+            <img src="{{ asset('img/iconenavbar.png') }}" width="60" height="60" class="d-inline-block align-top rounded-circle" alt="Logo">
+        </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent"
@@ -8,59 +12,43 @@
                 aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
                 {% if app.user %}
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_acceuil') }}"
-                       title="Accueil">Accueil</a>
-                </li>
-
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('mon_profil') }}"
-                           title="Mon profil">Mon profil</a>
-                    </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('sortie_list') }}"
-                       title="Les sorties disponibles">Les sorties disponibles</a>
-                </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('sortie_create') }}"
-                           title="Créer une sortie">Créer une sortie ! </a>
+                        <a class="nav-link text-warning" href="{{ path('app_acceuil') }}" title="Accueil">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_logout') }}"
-                           title="Se déconnecter">Se déconnecter</a>
+                        <a class="nav-link text-warning" href="{{ path('mon_profil') }}" title="Mon profil">Mon profil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="{{ path('sortie_list') }}" title="Les sorties disponibles">Les sorties disponibles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="{{ path('sortie_create') }}" title="Créer une sortie">Créer une sortie !</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="{{ path('app_logout') }}" title="Se déconnecter">Se déconnecter</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_login') }}"
-                           title="Se connecter">Se connecter</a>
+                        <a class="nav-link text-warning" href="{{ path('app_login') }}" title="Se connecter">Se connecter</a>
                     </li>
                 {% endif %}
-                    {% if is_granted('ROLE_ADMIN') %}
+
+                {% if is_granted('ROLE_ADMIN') %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_register') }}"
-                           title="Register">Enregistrer un utilisateur</a>
+                        <a class="nav-link text-info" href="{{ path('app_register') }}" title="Register">Enregistrer un utilisateur</a>
                     </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('import_participants') }}"
-                               title="Register">Enregistrer un utilisateur par fichier CSV</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('list_users') }}"
-                               title="Register">Liste des utilisateurs</a>
-                        </li>
-
-                    {% endif %}
-
+                    <li class="nav-item">
+                        <a class="nav-link text-info" href="{{ path('import_participants') }}" title="Register">Importer par CSV</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-info" href="{{ path('list_users') }}" title="Register">Liste des utilisateurs</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>
 </nav>
-

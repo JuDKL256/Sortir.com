@@ -12,7 +12,11 @@
 
         {% if not editMode %}
             <div class="image-placeholder">
-                <img src="{{ asset('img/photoDeProfil/' ~ participant.photoProfile) }}"/>
+                {% if participant.photoProfile %}
+                    <img src="{{ asset('img/photoDeProfil/' ~ participant.photoProfile) }}"/>
+                {% else %}
+                    <img src="{{ asset('img/profiledefault.png') }}" alt="Photo par défaut" class="profile-photo">
+                {% endif %}
             </div>
 
             <p><strong>Pseudo :</strong> {{ participant.username }}</p>

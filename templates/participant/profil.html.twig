@@ -30,6 +30,7 @@
                     <li class="list-group-item bg-transparent text-white"><strong>Nom :</strong> {{ participant.nom }}</li>
                     <li class="list-group-item bg-transparent text-white"><strong>Téléphone :</strong> {{ participant.telephone }}</li>
                     <li class="list-group-item bg-transparent text-white"><strong>Email :</strong> {{ participant.mail }}</li>
+{#                    <li class="list-group-item bg-transparent text-white"><strong>Role :</strong> {{ participant.roles.first() }}</li>#}
                 </ul>
 
                 {% if is_granted('ROLE_ADMIN') %}

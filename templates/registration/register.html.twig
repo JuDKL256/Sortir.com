@@ -4,14 +4,68 @@
 
 {% block body %}
     {% if is_granted('ROLE_ADMIN') %}
-    <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+        <div class="container d-flex justify-content-center mt-5">
+            <div class="card shadow-lg p-4 rounded-lg bg-black border-3" style="max-width: 500px; width: 100%; border-radius: 20px; border-color: darkorange;">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4 text-white fw-bold">Inscription</h2>
 
+                    <!-- Formulaire d'inscription -->
+                    {{ form_start(registrationForm) }}
 
+                    <!-- Champs du formulaire avec un alignement uniforme -->
+                    <div class="mb-3 row d-flex align-items-center">
+                        <div class="col-4">
+                            {{ form_label(registrationForm.username, 'Pseudo', {'label_attr': {'class': 'form-label text-white fw-bold'}}) }}
+                        </div>
+                        <div class="col-8">
+                            {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control border border-dark w-100'}}) }}
+                        </div>
+                    </div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_widget(registrationForm) }}
+                    <div class="mb-3 row d-flex align-items-center">
+                        <div class="col-4">
+                            {{ form_label(registrationForm.mail, 'Email', {'label_attr': {'class': 'form-label text-white fw-bold'}}) }}
+                        </div>
+                        <div class="col-8">
+                            {{ form_widget(registrationForm.mail, {'attr': {'class': 'form-control border border-dark w-100'}}) }}
+                        </div>
+                    </div>
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+                    <div class="mb-3 row d-flex align-items-center">
+                        <div class="col-4">
+                            {{ form_label(registrationForm.plainPassword.first, 'Mot de passe', {'label_attr': {'class': 'form-label text-white fw-bold'}}) }}
+                        </div>
+                        <div class="col-8">
+                            {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'form-control border border-dark w-100'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row d-flex align-items-center">
+                        <div class="col-4">
+                            {{ form_label(registrationForm.plainPassword.second, 'Confirmer le mot de passe', {'label_attr': {'class': 'form-label text-white fw-bold'}}) }}
+                        </div>
+                        <div class="col-8">
+                            {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'form-control border border-dark w-100'}}) }}
+                        </div>
+                    </div>
+
+                    <!-- Bouton de soumission -->
+                    <div class="d-flex justify-content-center mt-4">
+                        <button type="submit" class="btn btn-primary w-100 fw-bold custom-hover">S'inscrire</button>
+                    </div>
+
+{#                    {{ form_end(registrationForm) }}#}
+                </div>
+            </div>
+        </div>
+
+        <style>
+            /* Effet hover personnalisé pour le bouton */
+            .custom-hover:hover {
+                background-color: darkorange !important;
+                color: black !important;
+                border-color: darkorange !important;
+            }
+        </style>
     {% endif %}
 {% endblock %}

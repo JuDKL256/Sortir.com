@@ -38,6 +38,6 @@ class UserProvider implements UserProviderInterface
 
     public function supportsClass(string $class): bool
     {
-        return $class === Participant::class;
+        return $class === Participant::class || is_subclass_of($class, Participant::class);
     }
 }

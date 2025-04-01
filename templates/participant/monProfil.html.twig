@@ -84,6 +84,14 @@
                             {{ form_widget(form.mail, {'attr': {'class': 'form-control border border-dark'}}) }}
                         </div>
                     </div>
+                    <div class="mb-3 row">
+                        <div class="col-4">
+                            {{ form_label(form.site, 'Site', {'label_attr': {'class': 'form-label text-white fw-bold d-flex align-items-center h-100'}}) }}
+                        </div>
+                        <div class="col-8">
+                            {{ form_widget(form.site, {'attr': {'class': 'form-control border border-dark'}}) }}
+                        </div>
+                    </div>
 
                     <!-- Champs de mot de passe -->
                     <div class="mb-3 row">
@@ -110,7 +118,9 @@
                             <label class="form-label text-white fw-bold d-flex align-items-center h-100">Photo de profil</label>
                         </div>
                         <div class="col-8">
-                            <input type="file" class="form-control border border-dark" id="photoInput" onchange="previewImage(event)">
+                            {{ form_widget(form.photoDeProfil, {'attr': {'onchange': 'previewImage(event)'}}) }}
+                            <img id="imagePreview" src="#" alt="Image prévisualisée" style="display: none; margin-top: 15px; max-width: 100%; height: auto; border: 2px solid darkorange; border-radius: 10px;">
+
                         </div>
                     </div>
 
@@ -119,7 +129,7 @@
                         <button type="submit" class="btn fw-bold w-50 border border-white text-white">Enregistrer</button>
                         <a href="{{ path('mon_profil') }}" class="btn btn-danger w-50 fw-bold text-black" style="background-color: darkorange">Annuler</a>
                     </div>
-{#                    {{ form_end(form) }}#}
+                    {{ form_end(form) }}
 
                     <script>
                         function previewImage(event) {

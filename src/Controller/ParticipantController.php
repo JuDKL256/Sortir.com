@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
+
 use App\Form\RegistrationFormType;
 use App\Repository\ParticipantRepository;
 use App\Services\Uploader;

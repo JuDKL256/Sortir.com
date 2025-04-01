@@ -1,23 +1,29 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Liste des Villes{% endblock %}
+
 {% block body %}
-
-    <table class="sorties-table">
-        <thead>
-        <tr>
-            <th>Nom</th>
-            <th>Code postal</th>
-
-
-        </tr>
-        </thead>
-        <tbody>
-        {% for ville in villes %}
-            <tr>
-                <td>{{ ville.nom }}</td>
-                <td>{{ ville.codePostal }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="container mt-5">
+        <div class="card shadow-lg p-4 rounded-lg bg-black border-3" style="border-radius: 20px; border-color: darkorange;">
+            <div class="card-body">
+                <h2 class="card-title text-center text-white fw-bold mb-4">Liste des Villes</h2>
+                <table class="table table-striped table-bordered text-white">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Code postal</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for ville in villes %}
+                        <tr>
+                            <td>{{ ville.nom }}</td>
+                            <td>{{ ville.codePostal }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -3,10 +3,10 @@
 {% block title %}Mon Profil{% endblock %}
 
 {% block body %}
-    <div class="container d-flex justify-content-center mt-5">
-        <div class="card shadow-lg p-4 rounded-lg" style="max-width: 500px; width: 100%; border-radius: 20px;">
+    <div class="container d-flex justify-content-center mt-5 position-relative">
+        <div class="card shadow-lg p-4 rounded-lg bg-black border-3" style="margin-top: 6rem; max-width: 500px; width: 100%; border-radius: 20px; border-color: darkorange;">
             <div class="card-body text-center">
-                <h2 class="card-title mb-3">Mon Profil</h2>
+                <h2 class="card-title mb-3 fw-bold text-white">Mon Profil</h2>
 
                 {% for message in app.flashes('success') %}
                     <div class="alert alert-success">{{ message }}</div>
@@ -16,7 +16,7 @@
                     <!-- Photo de profil -->
                     <div class="mb-3">
                         {% if participant.photoProfile %}
-                            <img src="{{ asset('img/photoDeProfil/' ~ participant.photoProfile) }}" class="rounded-circle border" style="width: 250px; height: 250px; object-fit: cover;"/>
+                            <img src="{{ asset('img/photoDeProfil/' ~ participant.photoProfile) }}" class="rounded-circle" style="border: 5px solid darkorange;width: 250px; height: 250px; object-fit: cover;"/>
                         {% else %}
                             <img src="{{ asset('img/profiledefault.png') }}" alt="Photo par défaut" class="rounded-circle border" style="width: 250px; height: 250px; object-fit: cover;">
                         {% endif %}
@@ -24,71 +24,102 @@
 
                     <!-- Infos utilisateur -->
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><strong>Pseudo :</strong> {{ participant.username }}</li>
-                        <li class="list-group-item"><strong>Prénom :</strong> {{ participant.prenom }}</li>
-                        <li class="list-group-item"><strong>Nom :</strong> {{ participant.nom }}</li>
-                        <li class="list-group-item"><strong>Téléphone :</strong> {{ participant.telephone }}</li>
-                        <li class="list-group-item"><strong>Email :</strong> {{ participant.mail }}</li>
+                        <li class="list-group-item bg-transparent text-white"><strong>Pseudo :</strong> {{ participant.username }}</li>
+                        <li class="list-group-item bg-transparent text-white"><strong>Prénom :</strong> {{ participant.prenom }}</li>
+                        <li class="list-group-item bg-transparent text-white"><strong>Nom :</strong> {{ participant.nom }}</li>
+                        <li class="list-group-item bg-transparent text-white"><strong>Téléphone :</strong> {{ participant.telephone }}</li>
+                        <li class="list-group-item bg-transparent text-white"><strong>Email :</strong> {{ participant.mail }}</li>
                     </ul>
 
                     <div class="mt-3">
-                        <a href="?edit=1" class="btn btn-primary w-100">Modifier mon profil</a>
+                        <a href="?edit=1" class="btn btn-dark w-80 text-black fw-bold" style="background-color: darkorange">Modifier mon profil</a>
                     </div>
 
                 {% else %}
                     <!-- Formulaire d'édition -->
                     {{ form_start(form, {'attr': {'class': 'text-start'}}) }}
-                    <div class="mb-3">
-                        {{ form_label(form.username, 'Pseudo', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+
+                    <!-- Champs de formulaire avec taille uniforme -->
+                    <div class="mb-3 row">
+                        <div class="col-4">
+                            {{ form_label(form.username, 'Pseudo', {'label_attr': {'class': 'form-label text-white fw-bold d-flex align-items-center h-100'}}) }}
+                        </div>
+                        <div class="col-8">
+                            {{ form_widget(form.username, {'attr': {'class': 'form-control border border-dark'}}) }}
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+                    <div class="mb-3 row">
+                        <div class="col-4">
+                            {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'form-label text-white fw-bold d-flex align-items-center h-100'}}) }}
+                        </div>
+                        <div class="col-8">
+                            {{ form_widget(form.prenom, {'attr': {'class': 'form-control border border-dark'}}) }}
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                    <div class="mb-3 row">
+                        <div class="col-4">
+                            {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label text-white fw-bold d-flex align-items-center h-100'}}) }}
+                        </div>
+                        <div class="col-8">
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control border border-dark'}}) }}
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        {{ form_label(form.telephone, 'Téléphone', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
+                    <div class="mb-3 row">
+                        <div class="col-4">
+                            {{ form_label(form.telephone, 'Téléphone', {'label_attr': {'class': 'form-label text-white fw-bold d-flex align-items-center h-100'}}) }}
+                        </div>
+                        <div class="col-8">
+                            {{ form_widget(form.telephone, {'attr': {'class': 'form-control border border-dark'}}) }}
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        {{ form_label(form.mail, 'Email', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.mail, {'attr': {'class': 'form-control'}}) }}
+                    <div class="mb-3 row">
+                        <div class="col-4">
+                            {{ form_label(form.mail, 'Email', {'label_attr': {'class': 'form-label text-white fw-bold d-flex align-items-center h-100'}}) }}
+                        </div>
+                        <div class="col-8">
+                            {{ form_widget(form.mail, {'attr': {'class': 'form-control border border-dark'}}) }}
+                        </div>
                     </div>
 
                     <!-- Champs de mot de passe -->
-                    <div class="mb-3">
-                        {{ form_label(form.plainPassword.first, 'Nouveau mot de passe', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+                    <div class="mb-3 row">
+                        <div class="col-4">
+                            {{ form_label(form.plainPassword.first, 'Nouveau mot de passe', {'label_attr': {'class': 'form-label text-white fw-bold d-flex align-items-center h-100'}}) }}
+                        </div>
+                        <div class="col-8">
+                            {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control border border-dark'}}) }}
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        {{ form_label(form.plainPassword.second, 'Confirmer le mot de passe', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+                    <div class="mb-3 row">
+                        <div class="col-4">
+                            {{ form_label(form.plainPassword.second, 'Confirmer le mot de passe', {'label_attr': {'class': 'form-label text-white fw-bold d-flex align-items-center h-100'}}) }}
+                        </div>
+                        <div class="col-8">
+                            {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control border border-dark'}}) }}
+                        </div>
                     </div>
 
                     <!-- Upload photo de profil -->
-                    <div class="mb-3">
-                        <label class="form-label">Photo de profil</label>
-                        <input type="file" class="form-control" id="photoInput" onchange="previewImage(event)">
-                        <div class="mt-2">
-                            <img id="imagePreview" src="#" class="rounded border" style="display:none; max-width: 100px; max-height: 100px; object-fit: cover;">
+                    <div class="mb-3 row">
+                        <div class="col-4">
+                            <label class="form-label text-white fw-bold d-flex align-items-center h-100">Photo de profil</label>
+                        </div>
+                        <div class="col-8">
+                            <input type="file" class="form-control border border-dark" id="photoInput" onchange="previewImage(event)">
                         </div>
                     </div>
 
                     <!-- Boutons -->
-                    <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-success w-50">Enregistrer</button>
-                        <a href="{{ path('mon_profil') }}" class="btn btn-danger w-50">Annuler</a>
+                    <div class="d-flex justify-content-between mt-3 ">
+                        <button type="submit" class="btn fw-bold w-50 border border-white text-white">Enregistrer</button>
+                        <a href="{{ path('mon_profil') }}" class="btn btn-danger w-50 fw-bold text-black" style="background-color: darkorange">Annuler</a>
                     </div>
-                    {{ form_end(form) }}
+{#                    {{ form_end(form) }}#}
 
                     <script>
                         function previewImage(event) {

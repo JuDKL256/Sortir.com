@@ -3,50 +3,105 @@
 {% block title %}Home | {{ parent() }}{% endblock %}
 
 {% block body %}
-    <h2>Ceci est la liste des utilisateurs</h2>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4 fw-bold">Liste des utilisateurs</h2>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Prénom</th>
-            <th>Nom</th>
-            <th>Pseudo</th>
-            <th>Téléphone</th>
-            <th>Email</th>
-            <th>Site de rattachement</th>
-            <th>Est actif</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td><a href="{{ path('profil_utilisateur', {id: user.id}) }}">{{user.prenom}}</td>
-                <td>{{user.nom}}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.telephone }}</td>
-                <td>{{ user.mail }}</td>
-                <td>{{ user.site.nom }}</td>
-                <td>
-                    <span class="status-indicator {{ user.actif ? 'actif' : 'inactif' }}"></span>
-                </td>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for user in users %}
+                <div class="col">
+                    <div class="card shadow-lg border-3" style="border-color: darkorange; border-radius: 20px; background-color: #000;">
+                        <div class="card-body text-white p-4">
 
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <!-- Photo de profil -->
+                                    <div class="profile-img-wrapper">
+                                        {% if user.photoProfile %}
+                                            <img src="{{ asset('img/photoDeProfil/' ~ user.photoProfile) }}"
+                                                 class="rounded-circle border shadow-sm profile-img">
+                                        {% else %}
+                                            <img src="{{ asset('img/profiledefault.png') }}"
+                                                 class="rounded-circle border shadow-sm profile-img"
+                                                 alt="Photo par défaut">
+                                        {% endif %}
+                                    </div>
 
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                                    <!-- Nom et lien -->
+                                    <h4 class="card-title mb-0">
+                                        <a href="{{ path('profil_utilisateur', {id: user.id}) }}"
+                                           class="text-decoration-none text-white">
+                                            {{ user.prenom }} {{ user.nom }}
+                                        </a>
+                                    </h4>
+                                </div>
+
+                                <!-- Statut -->
+                                <span class="badge {{ user.actif ? 'bg-success' : 'bg-danger' }} rounded-pill px-3 py-2">
+                                    {{ user.actif ? 'Actif' : 'Inactif' }}
+                                </span>
+                            </div>
+
+                            <div class="user-info">
+                                <div class="info-row d-flex mb-2">
+                                    <div class="info-label fw-bold" style="width: 45%;">Pseudo:</div>
+                                    <div class="info-value">{{ user.username }}</div>
+                                </div>
+                                <div class="info-row d-flex mb-2">
+                                    <div class="info-label fw-bold" style="width: 45%;">Téléphone:</div>
+                                    <div class="info-value">{{ user.telephone }}</div>
+                                </div>
+                                <div class="info-row d-flex mb-2">
+                                    <div class="info-label fw-bold" style="width: 45%;">Email:</div>
+                                    <div class="info-value">{{ user.mail }}</div>
+                                </div>
+                                <div class="info-row d-flex mb-2">
+                                    <div class="info-label fw-bold" style="width: 45%;">Site:</div>
+                                    <div class="info-value">{{ user.site.nom }}</div>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-3">
+                                <a href="{{ path('profil_utilisateur', {id: user.id}) }}"
+                                   class="btn btn-dark custom-hover w-100 fw-bold">
+                                    Voir le profil
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+        /* Style personnalisé pour l'effet de survol orange */
+        .custom-hover:hover {
+            background-color: darkorange !important;
+            color: black !important;
+            border-color: darkorange !important;
+        }
+
+        /* Style pour le survol du nom d'utilisateur */
+        .card-title a:hover {
+            color: darkorange !important;
+            text-decoration: underline !important;
+        }
+
+        /* Wrapper pour la photo de profil */
+        .profile-img-wrapper {
+            width: 50px;
+            height: 50px;
+            border: 3px solid darkorange;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0; /* Évite que l'image se déforme */
+        }
+
+        /* Image responsive */
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-

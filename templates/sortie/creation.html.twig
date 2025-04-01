@@ -3,25 +3,88 @@
 {% block title %}Créer une sortie ! | {{ parent() }}{% endblock %}
 
 {% block body %}
-    {%  if  sortieForm.vars.value.id ==null%}
-        <h2>Programme ta soirée !</h2>
-    {% else %}
-        <h2>Modifie ta soirée !</h2>
-    {% endif %}
-    {{ form_start(sortieForm) }}
-    {{ form_row(sortieForm.nom) }}
-    {{ form_row(sortieForm.dateHeureDebut) }}
-    {{ form_row(sortieForm.duree) }}
-    {{ form_row(sortieForm.dateLimiteInscription) }}
-    {{ form_row(sortieForm.nbInscriptionMax) }}
-    {{ form_row(sortieForm.Lieu) }}
-    {{ form_row(sortieForm.Site) }}
-    {{ form_row(sortieForm.etat) }}
-    {{ form_row(sortieForm.Participants) }}
-    {{ form_row(sortieForm.infosSortie) }}
+    <div class="container mt-5">
+        <!-- Titre conditionnel -->
+        {% if sortieForm.vars.value.id == null %}
+            <h2 class="text-center text-white fw-bold">🎉 Programme ta soirée !</h2>
+        {% else %}
+            <h2 class="text-center text-white fw-bold">🎉 Modifie ta soirée !</h2>
+        {% endif %}
 
-    <button type="submit" class="btn btn-sm btn-primary">
-        {{ sortieForm.vars.value.id == null ? 'Create' : 'Modify' }}
-    </button>
-    {{ form_end(sortieForm) }}
+        <!-- Formulaire de création/modification -->
+        <div class="card shadow-lg border-3 mb-4 text-white" style="border-color: darkorange; background-color: #000;">
+            <div class="card-body p-4">
+                {{ form_start(sortieForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+
+                <!-- Formulaire dynamique avec Bootstrap -->
+                <div class="mb-3">
+                    <label class="form-label text-white">{{ form_label(sortieForm.nom) }}</label>
+                    {{ form_widget(sortieForm.nom, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-white">{{ form_label(sortieForm.dateHeureDebut) }}</label>
+                    {{ form_widget(sortieForm.dateHeureDebut, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-white">{{ form_label(sortieForm.duree) }}</label>
+                    {{ form_widget(sortieForm.duree, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-white">{{ form_label(sortieForm.dateLimiteInscription) }}</label>
+                    {{ form_widget(sortieForm.dateLimiteInscription, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-white">{{ form_label(sortieForm.nbInscriptionMax) }}</label>
+                    {{ form_widget(sortieForm.nbInscriptionMax, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-white">{{ form_label(sortieForm.Lieu) }}</label>
+                    {{ form_widget(sortieForm.Lieu, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-white">{{ form_label(sortieForm.Site) }}</label>
+                    {{ form_widget(sortieForm.Site, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-white">{{ form_label(sortieForm.etat) }}</label>
+                    {{ form_widget(sortieForm.etat, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-white">{{ form_label(sortieForm.Participants) }}</label>
+                    {{ form_widget(sortieForm.Participants, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-white">{{ form_label(sortieForm.infosSortie) }}</label>
+                    {{ form_widget(sortieForm.infosSortie, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <!-- Bouton de soumission -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary w-50 fw-bold custom-hover">
+                        {{ sortieForm.vars.value.id == null ? 'Créer' : 'Modifier' }}
+                    </button>
+                </div>
+
+                {{ form_end(sortieForm) }}
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Effet hover pour les boutons */
+        .custom-hover:hover {
+            background-color: darkorange !important;
+            color: black !important;
+            border-color: darkorange !important;
+        }
+    </style>
 {% endblock %}

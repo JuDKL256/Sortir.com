@@ -4,50 +4,53 @@
 
 {% block body %}
     <div class="container d-flex justify-content-center mt-5 position-relative">
-        {% if previousUserId %}
-            <a href="{{ path('profil_utilisateur', {'id': previousUserId}) }}" class="btn btn-outline-primary position-absolute start-0 top-50 translate-middle-y ms-3">
-                ⬅️ Précédent
-            </a>
-        {% endif %}
 
-        <div class="card shadow-lg p-4 rounded-lg text-center" style="max-width: 500px; width: 100%; border-radius: 20px;">
-            <div class="card-body">
-                <h2 class="card-title mb-3">{{ participant.username }}</h2>
+        <div class="card shadow-lg p-4 rounded-lg bg-black border-3 text-center"
+             style="margin-top: 7rem;max-width: 500px; width: 100%; border-radius: 20px; border-color: darkorange;">
+            <div class="card-body text-center">
+                <h2 class="card-title mb-3 fw-bold text-white">{{ participant.username }}</h2>
 
                 <!-- Photo de profil -->
                 <div class="mb-3">
                     {% if participant.photoProfile %}
-                        <img src="{{ asset('img/photoDeProfil/' ~ participant.photoProfile) }}" class="rounded-circle border shadow-sm" style="width: 250px; height: 250px; object-fit: cover;"/>
+                        <img src="{{ asset('img/photoDeProfil/' ~ participant.photoProfile) }}"
+                             class="rounded-circle  shadow-sm"
+                             style="border: 5px solid darkorange; width: 250px; height: 250px; object-fit: cover;"/>
                     {% else %}
-                        <img src="{{ asset('img/profiledefault.png') }}" alt="Photo par défaut" class="rounded-circle border shadow-sm" style="width: 250px; height: 250px; object-fit: cover;">
+                        <img src="{{ asset('img/profiledefault.png') }}" alt="Photo par défaut"
+                             class="rounded-circle  shadow-sm"
+                             style="border: 5px solid darkorange; width: 250px; height: 250px; object-fit: cover;">
                     {% endif %}
                 </div>
 
                 <!-- Infos utilisateur -->
-                <ul class="list-group list-group-flush text-start">
-                    <li class="list-group-item"><strong>Pseudo :</strong> {{ participant.username }}</li>
-                    <li class="list-group-item"><strong>Prénom :</strong> {{ participant.prenom }}</li>
-                    <li class="list-group-item"><strong>Nom :</strong> {{ participant.nom }}</li>
-                    <li class="list-group-item"><strong>Téléphone :</strong> {{ participant.telephone }}</li>
-                    <li class="list-group-item"><strong>Email :</strong> {{ participant.mail }}</li>
+                <ul class="list-group list-group-flush ">
+                    <li class="list-group-item bg-transparent text-white"><strong>Pseudo :</strong> {{ participant.username }}</li>
+                    <li class="list-group-item bg-transparent text-white"><strong>Prénom :</strong> {{ participant.prenom }}</li>
+                    <li class="list-group-item bg-transparent text-white"><strong>Nom :</strong> {{ participant.nom }}</li>
+                    <li class="list-group-item bg-transparent text-white"><strong>Téléphone :</strong> {{ participant.telephone }}</li>
+                    <li class="list-group-item bg-transparent text-white"><strong>Email :</strong> {{ participant.mail }}</li>
                 </ul>
 
                 {% if is_granted('ROLE_ADMIN') %}
                     <!-- Statut -->
                     <div class="mt-3">
-                        <p><strong>Status :</strong>
+                        <p class="text-white"><strong>Status :</strong>
                             <span class="badge {{ participant.actif ? 'bg-success' : 'bg-danger' }}">
-                            {{ participant.actif ? 'Actif' : 'Inactif' }}
-                        </span>
+                                {{ participant.actif ? 'Actif' : 'Inactif' }}
+                            </span>
                         </p>
                     </div>
 
                     <!-- Boutons d'admin -->
                     <div class="d-flex gap-2 mt-3">
-                        <a href="{{ path('toggle_status', {'id': participant.id}) }}" class="btn btn-warning w-50">
+                        <a href="{{ path('toggle_status', {'id': participant.id}) }}"
+                           class="btn btn-black w-50 fw-bold text-white border border-white">
                             {{ participant.actif ? 'Désactiver' : 'Activer' }}
                         </a>
-                        <a href="{{ path('delete', {'id': participant.id}) }}" class="btn btn-danger w-50">
+                        <a href="{{ path('delete', {'id': participant.id}) }}"
+                           class="btn btn-danger w-50 fw-bold text-black"
+                           style="background-color: darkorange;">
                             Supprimer
                         </a>
                     </div>
@@ -55,9 +58,5 @@
             </div>
         </div>
 
-        <!-- Bouton utilisateur suivant -->
-        <a href="{{ path('profil_utilisateur', {'id': nextUserId}) }}" class="btn btn-outline-primary position-absolute end-0 top-50 translate-middle-y me-3">
-            Suivant ➡️
-        </a>
     </div>
 {% endblock %}

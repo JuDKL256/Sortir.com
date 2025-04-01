@@ -28,9 +28,9 @@ class SortieController extends AbstractController
 
         $sorties = [];
         if (!($searchForm->isEmpty())) {
-            $filters = $searchForm->getData();
-            dump($filters);
-            $sorties = $sortieRepository->rechercheSorties($filters, $user);
+            $filtres = $searchForm->getData();
+            dump($filtres);
+            $sorties = $sortieRepository->rechercheSorties($filtres);
             dump($sorties);
         } else {
             // Par défaut, charger toutes les sorties à venir
@@ -47,6 +47,15 @@ class SortieController extends AbstractController
 //        $sorties = $sortieRepository
 //            ->findAll();
 //        return $this->render('sortie/list.html.twig', ["sorties" => $sorties]);
+    }
+
+    #[Route('/sorties/cancelled', name: 'sortie_cancelled', methods: ['GET'])]
+    public function cancelled(SortieRepository $sortieRepository
+    ): Response
+    {
+        $sorties = $sortieRepository
+            ->findAll();
+        return $this->render('sortie/cancelled.html.twig', ["sorties" => $sorties]);
     }
 
     #[Route('/sorties/{id}', name: 'sortie_detail', requirements: ['id' => '\d+'], methods: ['GET'])]
@@ -195,29 +204,28 @@ class SortieController extends AbstractController
 //    #[IsGranted('WISH_EDIT', 'sortie')]
     public function annulation(Sortie $sortie, MotifAnnulation $motif, Request $request, EntityManagerInterface $em): Response
     {
-
-        $motif->setSortie($sortie);
-        dd($sortie);
-        $motifForm = $this->createForm(MotifAnnulationType::class, $motif);
-
-        $motifForm->handleRequest($request);
-
-
-
-
-
-        if (!$sortie) {
-            throw $this->createNotFoundException('Pardon, mais cette sortie n\'existe pas !' );
-        }
-
         $sortie = $em->getRepository(Sortie::class)->find($sortie->getId());
-        if ($sortie->getOrganisateur() == ($this->getUser())) {
-
-            $em->remove($sortie, true);
+        //Création de l'entité vide
+        $motif = new MotifAnnulation();
+        $motif->setSortie($sortie);
+        //Création du formulaire et association de l'entité vide.
+        $annulationForm = $this->createForm(MotifAnnulationType::class, $motif);
+        //Récupère les données du formulaire et on les injecte dans notre $sortie.
+        $annulationForm->handleRequest($request);
+        //On vérifie si le formulaire a été soumis et que les données soumises sont valides.
+        if ($annulationForm->isSubmitted() && $annulationForm->isValid()) {
+            $sortie->getEtat()->setLibelle("Annulée");
+            $sortie->setInfosSortie("Annulation : " . $motif->getMotif());
+            //ajout de la relation avec le user
+            $em->persist($sortie);
+            $em->persist($motif);
             $em->flush();
-            $this->addFlash('success', 'Cette sortie a été annulée !');
+            //Affiche un message à l'utilisateur sur la prochaine page.
+            $this->addFlash('success', 'Ta sortie a bien été annulée !');
+            //Redirige vers la page de detail du sortie
+            return $this->redirectToRoute('sortie_list');
         }
-
-        return $this->redirectToRoute('sortie_list', ['id' => $sortie->getId()]);
+        //Affiche le formulaire
+        return $this->render('sortie/annulation.html.twig', ["MotifAnnulationForm" => $annulationForm]);
     }
 }

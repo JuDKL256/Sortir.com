@@ -1,6 +1,8 @@
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg bg-black fixed-top">
     <div class="container-fluid">
-
+        <a class="navbar-brand" href="{{ path('app_acceuil') }}">
+            <img src="{{ asset('img/iconenavbar.png') }}" alt="Logo" class="navbar-logo">
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent"
@@ -9,77 +11,59 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="nav nav-tabs">
-
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                 {% if app.user %}
-
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ path('app_acceuil') }}"
-                       title="Accueil">Accueil</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Sorties</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ path('sortie_list') }}">Les sorties disponibles</a></li>
-                        <li><a class="dropdown-item" href="{{ path('sortie_create') }}">Créer une sortie</a></li>
-                        <li><a class="dropdown-item" href="{{ path('sortie_cancelled') }}">Sortie annulées</a></li>
-                        <li><a class="dropdown-item" href="#">Sortie archivées</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Separated link</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Lieux</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ path('lieu_list') }}">Les lieux disponibles</a></li>
-                        <li><a class="dropdown-item" href="{{ path('lieu_create') }}">Créer un lieu</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Separated link</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Villes</a>
-                    <ul class="dropdown-menu">
-                       <li><a class="dropdown-item" href="{{ path('ville_list') }}">Les villes disponibles</a></li>
-                        <li><a class="dropdown-item" href="{{ path('ville_create') }}">Créer une ville</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Separated link</a></li>
-                    </ul>
-                </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ path('app_login') }}"
-                           title="Se connecter">Se connecter</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle bg-warning text-black" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Sorties</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ path('sortie_list') }}">Les sorties disponibles</a></li>
+                            <li><a class="dropdown-item" href="{{ path('sortie_create') }}">Créer une sortie</a></li>
+                            <li><a class="dropdown-item" href="{{ path('sortie_cancelled') }}">Sorties annulées</a></li>
+                            <li><a class="dropdown-item" href="#">Sorties archivées</a></li>
+                        </ul>
                     </li>
-                {% endif %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle bg-warning text-black" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Lieux</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ path('lieu_list') }}">Les lieux disponibles</a></li>
+                            <li><a class="dropdown-item" href="{{ path('lieu_create') }}">Créer un lieu</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle bg-warning text-black" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Villes</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ path('ville_list') }}">Les villes disponibles</a></li>
+                            <li><a class="dropdown-item" href="{{ path('ville_create') }}">Créer une ville</a></li>
+                        </ul>
+                    </li>
                     {% if is_granted('ROLE_ADMIN') %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Admin</a>
+                            <a class="nav-link dropdown-toggle bg-warning text-black" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Admin</a>
                             <ul class="dropdown-menu">
-
                                 <li><a class="dropdown-item" href="{{ path('app_register') }}">Enregistrer un participant</a></li>
                                 <li><a class="dropdown-item" href="{{ path('list_users') }}">Liste des participants</a></li>
                                 <li><a class="dropdown-item" href="{{ path('import_participants') }}">Import de participants par CSV</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Separated link</a></li>
                             </ul>
                         </li>
-
                     {% endif %}
-                {% if app.user %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Profil</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ path('mon_profil') }}">Mon profil</a></li>
-                        <li><a class="dropdown-item" href="{{ path('app_logout') }}">Se déconnecter</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Separated link</a></li>
-                    </ul>
-                </li>
+                {% else %}
+                    <li class="nav-item bg-warning text-black">
+                        <a class="nav-link active" aria-current="page" href="{{ path('app_login') }}" title="Se connecter">Se connecter</a>
+                    </li>
                 {% endif %}
-
             </ul>
+            {% if app.user %}
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle bg-warning text-black" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Profil</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ path('mon_profil') }}">Mon profil</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_logout') }}">Se déconnecter</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            {% endif %}
         </div>
     </div>
 </nav>
-

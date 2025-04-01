@@ -76,10 +76,24 @@ final class ParticipantController extends AbstractController
     }
 
     #[Route('/profil/{id}', name: 'profil_utilisateur', methods: ['GET'])]
-    public function showUserProfile(Participant $participant): Response
+    public function showUserProfile(int $id, EntityManagerInterface $entityManager): Response
     {
+        $repository = $entityManager->getRepository(Participant::class);
+
+        // Récupérer l'utilisateur actuel
+        $participant = $repository->find($id);
+        if (!$participant) {
+            throw $this->createNotFoundException("Utilisateur introuvable.");
+        }
+
+        // Vérifier si les utilisateurs précédent et suivant existent
+        $previousUser = $repository->find($id - 1);
+        $nextUser = $repository->find($id + 1);
+
         return $this->render('participant/profil.html.twig', [
             'participant' => $participant,
+            'previousUserId' => $previousUser ? $id - 1 : null,
+            'nextUserId' => $nextUser ? $id + 1 : null,
         ]);
     }
 

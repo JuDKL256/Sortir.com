@@ -8,8 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-
 
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
 class Sortie
@@ -20,45 +18,29 @@ class Sortie
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(min:2, max:255)]
-    #[Assert\Regex(
-     pattern: "/<[^>]*>/",
-        message: "Le nom ne doit pas contenir de balises HTML.",
-        match: false
-     )]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\GreaterThanOrEqual("today", message:"La date de début ne peut pas être dans le passé.")]
     private ?\DateTimeInterface $dateHeureDebut = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $duree = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\GreaterThanOrEqual(propertyPath:"dateHeureDebut", message:"La date de début ne peut pas être dans le passé.")]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 
     #[ORM\Column]
     private ?int $nbInscriptionMax = null;
 
     #[ORM\Column(type: Types::TEXT)]
-
-    #[Assert\Regex(
-        pattern: "/<[^>]*>/",
-        message: "Le nom ne doit pas contenir de balises HTML.",
-        match: false
-    )]
     private ?string $infosSortie = null;
 
     #[ORM\ManyToOne(inversedBy: 'sorties')]
     #[ORM\JoinColumn(nullable: true)]
-    #[Assert\Type("App\Entity\Lieu")]
     private ?Lieu $Lieu = null;
 
     #[ORM\ManyToOne(inversedBy: 'sorties')]
     #[ORM\JoinColumn(nullable: true)]
-    #[Assert\Type("App\Entity\Site")]
     private ?Site $Site = null;
 
 

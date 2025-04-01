@@ -3,26 +3,19 @@
 namespace App\Repository;
 
 use App\Entity\Sortie;
-use App\Models\SearchForm;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\SecurityBundle\Security;
 
 
 class SortieRepository extends ServiceEntityRepository
 {
-    private Security $security;
-
-    public function __construct(ManagerRegistry $registry, Security $security)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Sortie::class);
-        $this->security = $security;
     }
 
-    public function rechercheSorties(SearchForm $searchForm)
+    public function rechercheSorties($filters, $user)
     {
-        $user = $this->security->getUser();
-
         $qb = $this->getEntityManager()->getRepository(Sortie::class)->createQueryBuilder('sortie')
             ->leftJoin('sortie.Site', 'site')
             ->leftJoin('sortie.Organisateur', 'organisateur')
@@ -33,44 +26,44 @@ class SortieRepository extends ServiceEntityRepository
             ->setParameter('now', new \DateTime());
 
         // Filtrage par site
-        if ($searchForm->getSite()) {
+        if (!empty($filters['site'])) {
             $qb->andWhere('sortie.Site = :site')
-                ->setParameter('site', $searchForm->getSite());
+                ->setParameter('site', $filters['site']);
         }
 
         // Filtrage par nom
-        if ($searchForm->getNom()) {
+        if (!empty($filters['nom'])) {
             $qb->andWhere('sortie.nom LIKE :nom OR sortie.infosSortie LIKE :nom')
-                ->setParameter('nom', '%' . $searchForm->getNom() . '%');
+                ->setParameter('nom', '%' . $filters['nom'] . '%');
         }
 
         // Filtrage par date
-        if ($searchForm->getDateDebut() && $searchForm->getDateFin()) {
+        if (!empty($filters['dateDebut']) && !empty($filters['dateFin'])) {
             $qb->andWhere('sortie.dateHeureDebut BETWEEN :dateDebut AND :dateFin')
-                ->setParameter('dateDebut', $searchForm->getDateDebut())
-                ->setParameter('dateFin', $searchForm->getDateFin());
+                ->setParameter('dateDebut', $filters['dateDebut'])
+                ->setParameter('dateFin', $filters['dateFin']);
         }
 
         // Sorties dont l'utilisateur est organisateur
-        if ($searchForm->isOrganisateur()) {
+        if (!empty($filters['organisateur'])) {
             $qb->andWhere('organisateur = :user')
                 ->setParameter('user', $user);
         }
 
         // Sorties auxquelles l'utilisateur est inscrit
-        if ($searchForm->isInscrit()) {
+        if (!empty($filters['inscrit'])) {
             $qb->andWhere(':user MEMBER OF sortie.Participants')
                 ->setParameter('user', $user);
         }
 
         // Sorties auxquelles l'utilisateur n'est pas inscrit
-        if ($searchForm->isNonInscrit()) {
+        if (!empty($filters['nonInscrit'])) {
             $qb->andWhere(':user NOT MEMBER OF sortie.Participants')
                 ->setParameter('user', $user);
         }
 
         // Sorties passées (jusqu'à un mois après la date de début)
-        if ($searchForm->isSortiesPassees()) {
+        if (!empty($filters['sortiesPassees'])) {
             $oneMonthAgo = new \DateTime();
             $oneMonthAgo->sub(new \DateInterval('P1M'));
 
@@ -119,5 +112,4 @@ class SortieRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-
 }

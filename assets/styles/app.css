@@ -54,5 +54,50 @@ body {
     height: 100%;
     object-fit: cover;
 }
-/* Style de la carte */
 
+.navbar-dark .nav-link {
+    color: orange !important;
+    font-weight: bold;
+}
+.navbar-dark .nav-link:hover {
+    color: #ff9900 !important;
+    text-decoration: underline;
+}
+.navbar-brand img {
+    height: 80px;
+    width: auto;
+}
+
+.dropdown-item {
+    color: #ef921c !important;
+    background: black !important;
+}
+/* Change la couleur de fond des éléments de menu déroulant */
+.dropdown-menu {
+    background-color: #000000; /* Couleur noire */
+}
+
+/* Change la couleur du texte des éléments de menu déroulant */
+.dropdown-item {
+    color: #ffffff; /* Couleur blanche pour le texte */
+}
+
+/* Change la couleur de fond des éléments de menu déroulant au survol */
+.dropdown-item:hover {
+    background-color: #333333; /* Couleur plus claire pour le survol */
+}
+
+/* Change la couleur du séparateur dans les menus déroulants */
+.dropdown-divider {
+    border-top: 1px solid #ffffff; /* Couleur blanche pour le séparateur */
+}
+
+
+
+
+
+
+.dropdown-toggle {
+    color: #ef921c !important;
+    background: black !important;
+}

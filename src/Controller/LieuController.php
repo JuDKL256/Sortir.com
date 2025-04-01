@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class LieuController extends AbstractController
 {
-    #[Route('/sorties/create', name: 'lieu_create', methods: ['GET', 'POST'])]
+    #[Route('/lieu/create', name: 'lieu_create', methods: ['GET', 'POST'])]
     public function create(Request $request, EntityManagerInterface $em): Response
     {
         //Création de l'entité vide

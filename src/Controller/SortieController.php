@@ -32,9 +32,9 @@ class SortieController extends AbstractController
 
         $sorties = [];
         if (!($searchForm->isEmpty())) {
-            $filters = $searchForm->getData();
-            dump($filters);
-            $sorties = $sortieRepository->rechercheSorties($filters, $user);
+            $filtres = $searchForm->getData();
+            dump($filtres);
+            $sorties = $sortieRepository->rechercheSorties($filtres);
             dump($sorties);
         } else {
             $sorties = $sortieRepository->findAll();

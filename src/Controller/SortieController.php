@@ -9,6 +9,7 @@ use App\Entity\Sortie;
 use App\Form\MotifAnnulationType;
 use App\Form\SearchType;
 use App\Form\SortieType;
+use App\Models\SearchForm;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,18 +24,14 @@ class SortieController extends AbstractController
     ): Response
     {
         $user = $this->getUser(); // Récupère l'utilisateur connecté
-        $searchForm = $this->createForm(SearchType::class);
+        $searchForm = new SearchForm();
+        $searchForm = $this->createForm(SearchType::class, $searchForm);
         $searchForm->handleRequest($request);
 
         $sorties = [];
-        if (!($searchForm->isEmpty())) {
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $filtres = $searchForm->getData();
-            dump($filtres);
             $sorties = $sortieRepository->rechercheSorties($filtres);
-            dump($sorties);
-        } else {
-            // Par défaut, charger toutes les sorties à venir
-            $sorties = $sortieRepository->findAll();
         }
 
         return $this->render('sortie/list.html.twig', [

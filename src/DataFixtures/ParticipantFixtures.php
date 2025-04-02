@@ -36,7 +36,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                         )
                     )
                     ->setSite($faker->randomElement($sites))
-                    ->setActif('true');
+                    ->setActif('true')
+                    ->setPhotoProfile('jenna.jpg')
+                    ->setRoles(["ROLE_USER"]);
 
         $manager->persist($participant);
 
@@ -55,7 +57,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('manu.png')
+            ->setRoles(["ROLE_ADMIN"]);
         $manager->persist($participant);
 
 
@@ -73,7 +77,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('abella.jpg')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
@@ -91,7 +97,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('mia.jpg')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
@@ -109,7 +117,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('lisa.jpg')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
@@ -127,7 +137,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('jordi.png')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
@@ -145,7 +157,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('pierre.jpg')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
@@ -163,7 +177,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('katsuni.jpg')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
@@ -181,7 +197,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('clara.jpeg')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
@@ -199,7 +217,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('rocco.jpg')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
@@ -217,7 +237,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('mimie.jpg')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
@@ -235,7 +257,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('nacho.jpg')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
@@ -253,7 +277,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('liza.jpg')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
@@ -271,7 +297,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('eva.jpg')
+            ->setRoles(['ROLE_USER']);
         $manager->persist($participant);
 
 
@@ -289,7 +317,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('tabatha.jpg')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
@@ -307,7 +337,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('phil.jpg')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
@@ -325,7 +357,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('nikita.jpg')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
@@ -343,7 +377,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('seb.jpg')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
@@ -361,14 +397,16 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('tony.jpg')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
         $participant = new Participant();
         $participant
             ->setUsername('little')
-            ->setNom('Caprice')
+            ->setNom('Angel')
             ->setPrenom('Little')
             ->setmail('little@little.fr')
             ->setTelephone('0623458980')
@@ -379,7 +417,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('little.jpg')
+            ->setRoles(["ROLE_USER"]);
         $manager->persist($participant);
 
 
@@ -397,7 +437,9 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
                 )
             )
             ->setSite($faker->randomElement($sites))
-            ->setActif('true');
+            ->setActif('true')
+            ->setPhotoProfile('bonnie.jpg')
+            ->setRoles(["ROLE_USER"]);
 
         $manager->persist($participant);
         $manager->flush();

@@ -19,36 +19,39 @@ class ChangePasswordFormType extends AbstractType
         $builder
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'options' => [
-                    'attr' => [
-                        'autocomplete' => 'new-password',
-                    ],
-                ],
                 'first_options' => [
+                    'label' => false,
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'Please enter a password',
+                            'message' => 'Entrez un mot de passe svp',
                         ]),
                         new Length([
-                            'min' => 12,
-                            'minMessage' => 'Your password should be at least {{ limit }} characters',
-                            // max length allowed by Symfony for security reasons
+                            'min' => 6,
+                            'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
                             'max' => 4096,
                         ]),
-                        new PasswordStrength(),
-                        new NotCompromisedPassword(),
+                        new PasswordStrength([
+                            'message' => "Le niveau de sécurité du mot de passe est trop faible. Veuillez utiliser un mot de passe plus fort."
+                        ]),
+                        new NotCompromisedPassword([
+                            'message' => "Ce mot de passe a été divulgué suite à une violation de données ; il ne doit pas être utilisé. Veuillez utiliser un autre mot de passe."
+                        ]),
                     ],
-                    'label' => 'New password',
+                    'attr' => [
+                        'class' => 'form-control',
+                        'placeholder' => 'Nouveau mot de passe',
+                    ],
                 ],
                 'second_options' => [
-                    'label' => 'Repeat Password',
+                    'label' => false,
+                    'attr' => [
+                        'class' => 'form-control',
+                        'placeholder' => 'Répétez le mot de passe',
+                    ],
                 ],
-                'invalid_message' => 'The password fields must match.',
-                // Instead of being set onto the object directly,
-                // this is read and encoded in the controller
+                'invalid_message' => 'Le mot de passe et la confirmation doivent correspondre.',
                 'mapped' => false,
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -10,6 +10,7 @@ use App\Services\Uploader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -137,6 +138,52 @@ final class ParticipantController extends AbstractController
 
     }
 
+    #[Route('/toggle-admin/{id}', name: 'toggle_admin_role', methods: ['POST'])]
+    public function toggleAdminRole(Participant $participant, EntityManagerInterface $entityManager): JsonResponse
+    {
+        // Vérifie si l'utilisateur est un administrateur
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->json(['success' => false, 'error' => 'Accès refusé'], Response::HTTP_FORBIDDEN);
+        }
+
+        // Récupération des rôles
+        $roles = $participant->getRoles();
+
+        if (in_array('ROLE_ADMIN', $roles)) {
+            // Supprime le rôle ADMIN
+            $roles = array_diff($roles, ['ROLE_ADMIN']);
+        } else {
+            // Ajoute le rôle ADMIN
+            $roles[] = 'ROLE_ADMIN';
+        }
+
+        // Mise à jour des rôles
+        $participant->setRoles($roles);
+        $entityManager->flush();
+
+        return $this->json([
+            'success' => true,
+            'isAdmin' => in_array('ROLE_ADMIN', $participant->getRoles()),
+        ]);
+    }
+
+    #[Route('/toggle-status/{id}', name: 'toggle_status', methods: ['POST'])]
+    public function toggleStatus2(Participant $participant, EntityManagerInterface $entityManager): JsonResponse
+    {
+        // Vérifie si l'utilisateur est un administrateur
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->json(['success' => false, 'error' => 'Accès refusé'], Response::HTTP_FORBIDDEN);
+        }
+
+        // Inverse le statut actif/inactif
+        $participant->setActif(!$participant->isActif());
+        $entityManager->flush();
+
+        return $this->json([
+            'success' => true,
+            'newStatus' => $participant->isActif(),
+        ]);
+    }
 }
 
 

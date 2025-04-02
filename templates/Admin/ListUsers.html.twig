@@ -58,6 +58,17 @@
                                     <div class="info-label fw-bold" style="width: 45%;">Site:</div>
                                     <div class="info-value">{{ user.site.nom }}</div>
                                 </div>
+                                <!-- Champ Rôle -->
+                                <div class="info-row d-flex mb-2">
+                                    <div class="info-label fw-bold" style="width: 45%;">Rôle:</div>
+                                    <div class="info-value">
+                                        {% if 'ROLE_ADMIN' in user.roles %}
+                                            <span class="badge  text-black"style="background-color: darkorange">ADMIN</span>
+                                        {% else %}
+                                            <span class="badge ">USER</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="text-center mt-3">

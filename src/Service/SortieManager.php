@@ -44,10 +44,10 @@ class SortieManager
         $timezone = new \DateTimeZone('Europe/Paris');
         $now = new \DateTime('now', $timezone);
 
-        // Convertit les dates stockées en UTC vers Paris
+
         $dateDebut = (clone $sortie->getDateHeureDebut())->setTimezone($timezone)->sub(new \DateInterval('PT4H'));
         $dateFin = (clone $dateDebut)->add(new \DateInterval('PT'.$sortie->getDuree().'S')); // Secondes
-
+        $oneMonthAfterEnd = (clone $dateFin)->add(new \DateInterval('P1M'));
 //        dd([
 //            'nom sortie' => $sortie->getNom(),
 //            'duree' => $sortie->getDuree(),
@@ -72,8 +72,13 @@ class SortieManager
         }
 
         // 3. Gestion des autres états (seulement si pas en cours)
-        if ($dateFin < $now) {
+        if ($now > $oneMonthAfterEnd) {
+            $nouvelEtat = 'Archivée';
+        } elseif ($now > $dateFin) {
             $nouvelEtat = 'Passée';
+        } elseif ($sortie->getDateLimiteInscription() < $now
+            || $sortie->getParticipants()->count() >= $sortie->getNbInscriptionMax()) {
+            $nouvelEtat = 'Clôturée';
         } elseif ($sortie->getDateLimiteInscription() < $now
             || $sortie->getParticipants()->count() >= $sortie->getNbInscriptionMax()) {
             $nouvelEtat = 'Clôturée';

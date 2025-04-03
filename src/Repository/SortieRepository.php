@@ -23,14 +23,13 @@ class SortieRepository extends ServiceEntityRepository
     {
         $user = $this->security->getUser();
 
-        $qb = $this->getEntityManager()->getRepository(Sortie::class)->createQueryBuilder('sortie')
+        $qb = $this->createQueryBuilder('sortie')
+            ->addSelect(['site', 'org', 'part', 'etat'])
             ->leftJoin('sortie.Site', 'site')
-            ->leftJoin('sortie.Organisateur', 'organisateur')
-            ->leftJoin('sortie.Participants', 'participants');
+            ->leftJoin('sortie.Organisateur', 'org')
+            ->leftJoin('sortie.Participants', 'part')
+            ->leftJoin('sortie.etat', 'etat');
 
-        // Ajout d'une condition pour n'afficher que les sorties non commencées par défaut
-        $qb->andWhere('sortie.dateHeureDebut > :now')
-            ->setParameter('now', new \DateTime());
 
         // Filtrage par site
         if ($searchForm->getSite()) {
@@ -53,7 +52,7 @@ class SortieRepository extends ServiceEntityRepository
 
         // Sorties dont l'utilisateur est organisateur
         if ($searchForm->isOrganisateur()) {
-            $qb->andWhere('organisateur = :user')
+            $qb->andWhere('sortie.Organisateur = :user')
                 ->setParameter('user', $user);
         }
 
@@ -92,6 +91,18 @@ class SortieRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('s')
             ->where('s.dateHeureDebut >= :oneMonthAgo')
             ->setParameter('oneMonthAgo', $currentDate)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findWithAllRelations()
+    {
+        return $this->createQueryBuilder('s')
+            ->addSelect(['site', 'org', 'part', 'etat'])
+            ->leftJoin('s.Site', 'site')
+            ->leftJoin('s.Organisateur', 'org')
+            ->leftJoin('s.Participants', 'part')
+            ->leftJoin('s.etat', 'etat')
             ->getQuery()
             ->getResult();
     }

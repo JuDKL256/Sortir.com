@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: EtatRepository::class)]
 class Etat
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

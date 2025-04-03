@@ -5,7 +5,7 @@
         <h1 class="text-center fw-bold text-white">Filtrer les sorties</h1>
 
         <!-- Formulaire de recherche -->
-        <div class="card p-4 shadow-lg border-3 mb-4" style="border-color: darkorange; background-color: #000;">
+        <div class="card p-4 shadow-lg border-3 mb-4 fw-bold" style="border-color: darkorange; background-color: #000;">
             {{ form_start(searchForm, {'attr': {'class': 'search-form'}}) }}
 
             <div class="row g-3">
@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="col-12 text-center">
-                    {{ form_widget(searchForm.rechercher, {'attr': {'class': 'btn btn-primary custom-hover w-50 fw-bold'}}) }}
+                    {{ form_widget(searchForm.rechercher, {'attr': {'class': 'btn text-white border custom-hover w-50 fw-bold'}}) }}
                 </div>
             </div>
 
@@ -80,7 +80,7 @@
 
                             <!-- Bouton Afficher -->
                             <div class="text-center mt-3">
-                                <a href="{{ path('sortie_detail', {'id': sortie.id}) }}" class="btn btn-dark custom-hover w-100 fw-bold">
+                                <a href="{{ path('sortie_detail', {'id': sortie.id}) }}" class="btn text-white border custom-hover w-80 fw-bold">
                                     Voir les détails
                                 </a>
                             </div>

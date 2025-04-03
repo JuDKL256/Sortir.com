@@ -29,6 +29,10 @@ class SortieFixtures extends Fixture implements DependentFixtureInterface
         foreach ($lieux as $lieu) {
             $lieuxMap[$lieu->getNom()] = $lieu;
         }
+        $etatsMap=[];
+        foreach ($etats as $etat){
+            $etatsMap[$etat->getLibelle()]=$etat;
+        }
 
         $etatsMap = [];
         foreach ($etats as $etat) {

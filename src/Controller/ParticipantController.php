@@ -85,17 +85,23 @@ final class ParticipantController extends AbstractController
         // Récupérer l'utilisateur actuel
         $participant = $repository->find($id);
         if (!$participant) {
-            throw $this->createNotFoundException("Utilisateur introuvable.");
+            return $this->render('bundles/TwigBundle/Exception/user_not_found.html.twig');
         }
 
-        // Vérifier si les utilisateurs précédent et suivant existent
-        $previousUser = $repository->find($id - 1);
-        $nextUser = $repository->find($id + 1);
+        // Récupérer tous les utilisateurs
+        $allParticipants = $repository->findAll();
+
+        // Trouver l'index de l'utilisateur actuel dans la liste
+        $currentIndex = array_search($participant, $allParticipants);
+
+        // Déterminer les identifiants des utilisateurs précédent et suivant
+        $previousUserId = $currentIndex > 0 ? $allParticipants[$currentIndex - 1]->getId() : null;
+        $nextUserId = $currentIndex < count($allParticipants) - 1 ? $allParticipants[$currentIndex + 1]->getId() : null;
 
         return $this->render('participant/profil.html.twig', [
             'participant' => $participant,
-            'previousUserId' => $previousUser ? $id - 1 : null,
-            'nextUserId' => $nextUser ? $id + 1 : null,
+            'previousUserId' => $previousUserId,
+            'nextUserId' => $nextUserId,
         ]);
     }
 

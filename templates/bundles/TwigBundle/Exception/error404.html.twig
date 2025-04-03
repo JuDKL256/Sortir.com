@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="card shadow-lg p-5 rounded-lg bg-black border-3 text-center"
+             style="max-width: 750px; width: 100%; border-radius: 30px; border-color: darkorange;">
+            <div class="card-body">
+                <!-- Titre de l'erreur -->
+                <h1 class="fw-bold text-white display-4">😱 Oups... Erreur 404 !</h1>
+
+                <!-- Image fun et responsive -->
+                <div class="d-flex justify-content-center">
+                    <img src="{{ asset('img/manu&Abella.jpg') }}" alt="Erreur 404"
+                         class="img-fluid my-4 responsive-image"
+                         style="border-radius: 20px; border: 4px solid darkorange;">
+                </div>
+
+                <!-- Texte humoristique -->
+                <p class="text-white fs-5">
+                    On dirait que cette page s'est perdue en route... Peut-être a-t-elle pris un café trop fort et est partie en courant ? ☕🏃‍♂️
+                    <br><br>
+                    En attendant, vous pouvez retourner sur la page d'accueil avant qu'elle ne revienne vous hanter. 👻
+                </p>
+
+                <!-- Bouton de retour -->
+                <a href="{{ path('app_acceuil') }}" class="btn btn-outline-warning fw-bold btn-lg">
+                    🔙 Retour à la maison
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .responsive-image {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+{% endblock %}

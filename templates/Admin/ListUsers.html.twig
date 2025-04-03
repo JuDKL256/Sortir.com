@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container mt-5">
-        <h2 class="text-center mb-4 fw-bold">Liste des utilisateurs</h2>
+        <h2 class="text-center mb-4 fw-bold"  style="color: white">Liste des utilisateurs</h2>
 
         <div class="row row-cols-1 row-cols-md-2 g-4">
             {% for user in users %}
@@ -29,7 +29,7 @@
                                     <!-- Nom et lien -->
                                     <h4 class="card-title mb-0">
                                         <a href="{{ path('profil_utilisateur', {id: user.id}) }}"
-                                           class="text-decoration-none text-white">
+                                           class="text-decoration-none text-white fw-bold">
                                             {{ user.prenom }} {{ user.nom }}
                                         </a>
                                     </h4>
@@ -73,7 +73,7 @@
 
                             <div class="text-center mt-3">
                                 <a href="{{ path('profil_utilisateur', {id: user.id}) }}"
-                                   class="btn btn-dark custom-hover w-100 fw-bold">
+                                   class="btn text-white border custom-hover w-100 fw-bold">
                                     Voir le profil
                                 </a>
                             </div>

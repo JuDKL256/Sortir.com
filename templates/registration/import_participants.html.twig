@@ -1,51 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Import de participants{% endblock %}
-
 {% block body %}
-    <div class="container mt-5" style="margin-top: 10rem">
-        <h1 class="text-center text-white fw-bold">📂 Importer des participants</h1>
+    <div class="container mt-5 d-flex justify-content-center" style="margin-top: 10rem; max-width: 600px;">
+        <div class="w-100">
+            <h1 class="text-center text-white fw-bold">📂 Importer des participants</h1>
 
-        <!-- Carte d'instructions -->
-        <div class="card shadow-lg border-3 mb-4 text-white" style="border-color: darkorange; background-color: #000;">
-            <div class="card-body p-4">
-                <h4 class="card-title text-warning">📌 Instructions</h4>
-                <p class="mb-2">Veuillez télécharger un fichier CSV avec les données suivantes :</p>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item bg-dark text-white border-secondary">🔹 <strong>Username</strong></li>
-                    <li class="list-group-item bg-dark text-white border-secondary">🔹 <strong>Prénom</strong></li>
-                    <li class="list-group-item bg-dark text-white border-secondary">🔹 <strong>Nom</strong></li>
-                    <li class="list-group-item bg-dark text-white border-secondary">🔹 <strong>Email</strong></li>
-                    <li class="list-group-item bg-dark text-white border-secondary">🔹 <strong>Téléphone</strong></li>
-                </ul>
+            <!-- Carte d'instructions -->
+            <div class="card shadow-lg border-3 mb-4 text-white" style="border-color: darkorange; background-color: #000;">
+                <div class="card-body p-4">
+                    <h4 class="card-title fw-bold" style="color: darkorange">📌 Instructions</h4>
+                    <p class="mb-2">Veuillez télécharger un fichier CSV avec les données suivantes :</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item bg-dark text-white border-secondary">🔹 <strong>Username</strong></li>
+                        <li class="list-group-item bg-dark text-white border-secondary">🔹 <strong>Prénom</strong></li>
+                        <li class="list-group-item bg-dark text-white border-secondary">🔹 <strong>Nom</strong></li>
+                        <li class="list-group-item bg-dark text-white border-secondary">🔹 <strong>Email</strong></li>
+                        <li class="list-group-item bg-dark text-white border-secondary">🔹 <strong>Téléphone</strong></li>
+                    </ul>
+                </div>
             </div>
-        </div>
 
-        <!-- Formulaire d'import -->
-        <div class="card shadow-lg border-3 text-white" style="border-color: darkorange; background-color: #000;">
-            <div class="card-body p-4">
-                {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+            <!-- Formulaire d'import -->
+            <div class="card shadow-lg border-3 text-white" style="border-color: darkorange; background-color: #000;">
+                <div class="card-body p-4">
+                    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
 
-                <div class="mb-3">
-                    <label class="form-label text-white">{{ form_label(form.csvFile) }}</label>
-                    {{ form_widget(form.csvFile, {'attr': {'class': 'form-control'}}) }}
+                    <div class="mb-3">
+                        <label class="form-label text-white">{{ form_label(form.csvFile) }}</label>
+                        {{ form_widget(form.csvFile, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-white">{{ form_label(form.site) }}</label>
+                        {{ form_widget(form.site, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-white">{{ form_label(form.password) }}</label>
+                        {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn w-100 fw-bold custom-hover border text-white">📥 Importer</button>
+                    </div>
+
+                    {{ form_end(form) }}
                 </div>
-
-                <div class="mb-3">
-                    <label class="form-label text-white">{{ form_label(form.site) }}</label>
-                    {{ form_widget(form.site, {'attr': {'class': 'form-control'}}) }}
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label text-white">{{ form_label(form.password) }}</label>
-                    {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
-                </div>
-
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary w-50 fw-bold custom-hover">📥 Importer</button>
-                </div>
-
-                {{ form_end(form) }}
             </div>
         </div>
     </div>

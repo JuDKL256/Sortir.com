@@ -148,6 +148,8 @@ class SortieController extends AbstractController
         }
         //Affiche le formulaire
         return $this->render('sortie/creation.html.twig', ["sortieForm" => $sortieForm]);
+
+
     }
 
 

@@ -3,5 +3,44 @@
 {% block title %}Home | {{ parent() }}{% endblock %}
 
 {% block body %}
-    <h2>Ceci est la page d'accueil</h2>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card shadow-lg p-5 border-3 text-white text-center"
+             style="max-width: 900px; background-color: black; border-radius: 20px; border-color: darkorange;">
+            <div class="card-body">
+                <h1 class="fw-bold">🎉 Bienvenue sur Sortir.com – Votre Pass pour des Moments Inoubliables !</h1>
+
+                <p class="fs-5 mt-4">
+                    Vous êtes étudiant à l’<strong>ENI</strong> et vous cherchez à
+                    <span style="color: darkorange">rencontrer du monde, partager des expériences et vivre des moments uniques</span> en dehors des cours ?
+                    <strong>Sortir.com</strong> est <span style="color: darkorange">LA plateforme</span> qu’il vous faut !
+                </p>
+
+                <h2 class="fw-bold mt-5">🚀 Le concept</h2>
+                <p class="fs-5">
+                    Créé par <span class=" fw-bold" style="color: darkorange">Judikael, Samuel et Jonathan</span>, ce site a pour mission de
+                    <strong>rassembler les étudiants</strong> des différents campus de l’ENI autour
+                    d’événements conviviaux et de sorties mémorables.
+                </p>
+
+                <h2 class="fw-bold mt-5">🔹 Que pouvez-vous faire sur Sortir.com ?</h2>
+                <ul class="list-group mx-auto" style="max-width: 700px;">
+                    <li class="list-group-item bg-dark text-white border-secondary">✅ <strong>Organiser et proposer vos propres sorties</strong> – soirées, randonnées, escape games, tournois sportifs... tout est possible !</li>
+                    <li class="list-group-item bg-dark text-white border-secondary">✅ <strong>Rejoindre des événements</strong> créés par d'autres étudiants et ne jamais manquer une occasion de vous amuser.</li>
+                    <li class="list-group-item bg-dark text-white border-secondary">✅ <strong>Élargir votre réseau et faire de nouvelles rencontres</strong> en partageant des moments sympas avec des étudiants de tous horizons.</li>
+                </ul>
+
+                <h2 class="fw-bold mt-5">📍 Comment ça marche ?</h2>
+                <ol class="list-group mx-auto" style="max-width: 700px;">
+                    <li class="list-group-item bg-dark text-white border-secondary">🔹 <strong>Inscrivez-vous</strong> en quelques clics.</li>
+                    <li class="list-group-item bg-dark text-white border-secondary">🔹 <strong>Explorez les sorties à venir</strong> et rejoignez celles qui vous intéressent.</li>
+                    <li class="list-group-item bg-dark text-white border-secondary">🔹 <strong>Créez vos propres événements</strong> et invitez les autres à y participer.</li>
+                    <li class="list-group-item bg-dark text-white border-secondary">🔹 <strong>Profitez</strong> d’un max de fun et de nouvelles expériences !</li>
+                </ol>
+
+                <h2 class="fw-bold mt-5" style="color: darkorange">🔗 Rejoignez-nous dès maintenant et ne ratez plus aucune sortie ! 🚀🎊</h2>
+
+                <a href="{{ path('app_register') }}" class="btn btn-lg fw-bold mt-4 text-black" style="background-color: darkorange">Se connecter maintenant</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}

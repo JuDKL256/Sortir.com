@@ -12,7 +12,7 @@
         {% endif %}
 
         <!-- Formulaire dans une colonne de largeur réduite -->
-        <div class="card shadow-lg border-3 mb-4 text-white " style="border-color: darkorange; background-color: #000;">
+        <div class="card shadow-lg border-3 mb-4 text-white fw-bold " style="border-color: darkorange; background-color: #000;">
             <div class="card-body p-4 ">
                 {{ form_start(sortieForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
 
@@ -61,7 +61,7 @@
 
                         <!-- Bouton de soumission -->
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary w-50 fw-bold custom-hover">
+                            <button type="submit" class="btn w-100 fw-bold custom-hover border" style="color: darkorange">
                                 {{ sortieForm.vars.value.id == null ? 'Créer' : 'Modifier' }}
                             </button>
                         </div>

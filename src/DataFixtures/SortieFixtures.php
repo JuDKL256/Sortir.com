@@ -29,6 +29,10 @@ class SortieFixtures extends Fixture implements DependentFixtureInterface
         foreach ($lieux as $lieu) {
             $lieuxMap[$lieu->getNom()] = $lieu;
         }
+        $etatsMap=[];
+        foreach ($etats as $etat){
+            $etatsMap[$etat->getLibelle()]=$etat;
+        }
 
         $sortie = new Sortie();
         $sortie
@@ -40,7 +44,7 @@ class SortieFixtures extends Fixture implements DependentFixtureInterface
             ->setInfosSortie('Petite sortie de Karting avec tous ceux qui le veulent, on va bien rigoler')
             ->setOrganisateur($faker->randomElement($participants))
             ->setLieu($lieuxMap['Karting'])
-            ->setEtat($faker->randomElement($etats))
+            ->setEtat($etatsMap['Créée'])
             ->setSite($faker->randomElement($sites));
         $manager->persist($sortie);
 
@@ -54,7 +58,7 @@ class SortieFixtures extends Fixture implements DependentFixtureInterface
             ->setInfosSortie('Le film "Un petit truc en plus" vient de sortir et on vous propose de vous joindre à nous pour aller le voir')
             ->setOrganisateur($faker->randomElement($participants))
             ->setLieu($lieuxMap['Cinema'])
-            ->setEtat($faker->randomElement($etats))
+            ->setEtat($etatsMap['Créée'])
             ->setSite($faker->randomElement($sites));
         $manager->persist($sortie);
 
@@ -68,7 +72,7 @@ class SortieFixtures extends Fixture implements DependentFixtureInterface
             ->setInfosSortie('On fête les beaux jours en organisant un barathon au cœur de la ville')
             ->setOrganisateur($faker->randomElement($participants))
             ->setLieu($lieuxMap['Barathon'])
-            ->setEtat($faker->randomElement($etats))
+            ->setEtat($etatsMap['Créée'])
             ->setSite($faker->randomElement($sites));
         $manager->persist($sortie);
 
@@ -82,7 +86,7 @@ class SortieFixtures extends Fixture implements DependentFixtureInterface
             ->setInfosSortie('Si un midi vous voulez vous détendre et vous faire plaisir, enfilez votre plus beau slip et venez piquer une tête')
             ->setOrganisateur($faker->randomElement($participants))
             ->setLieu($lieuxMap['Piscine'])
-            ->setEtat($faker->randomElement($etats))
+            ->setEtat($etatsMap['Créée'])
             ->setSite($faker->randomElement($sites));
         $manager->persist($sortie);
 
@@ -96,7 +100,7 @@ class SortieFixtures extends Fixture implements DependentFixtureInterface
             ->setInfosSortie('Un match de foot pour tous les amateurs de foot, venez jouer avec nous !')
             ->setOrganisateur($faker->randomElement($participants))
             ->setLieu($lieuxMap['Soccer'])
-            ->setEtat($faker->randomElement($etats))
+            ->setEtat($etatsMap['Créée'])
             ->setSite($faker->randomElement($sites));
         $manager->persist($sortie);
 
@@ -110,7 +114,7 @@ class SortieFixtures extends Fixture implements DependentFixtureInterface
             ->setInfosSortie('Une visite du Mont Saint Michel pour tous ceux qui le veulent !')
             ->setOrganisateur($faker->randomElement($participants))
             ->setLieu($lieuxMap['Visite du Mont Saint Michel'])
-            ->setEtat($faker->randomElement($etats))
+            ->setEtat($etatsMap['Créée'])
             ->setSite($faker->randomElement($sites));
         $manager->persist($sortie);
 
@@ -124,7 +128,7 @@ class SortieFixtures extends Fixture implements DependentFixtureInterface
             ->setInfosSortie('Un match de foot pour voir la France prendre sa revanche sur l\'Argentine !')
             ->setOrganisateur($faker->randomElement($participants))
             ->setLieu($lieuxMap['Match Equipe de France'])
-            ->setEtat($faker->randomElement($etats))
+            ->setEtat($etatsMap['Créée'])
             ->setSite($faker->randomElement($sites));
         $manager->persist($sortie);
 
@@ -138,7 +142,7 @@ class SortieFixtures extends Fixture implements DependentFixtureInterface
             ->setInfosSortie('Le Stade Rennais rencontre le PSG pour cette dernière journée de championnat, prenez vos places !!!')
             ->setOrganisateur($faker->randomElement($participants))
             ->setLieu($lieuxMap['Match du SRFC'])
-            ->setEtat($faker->randomElement($etats))
+            ->setEtat($etatsMap['Créée'])
             ->setSite($faker->randomElement($sites));
         $manager->persist($sortie);
 
@@ -152,7 +156,7 @@ class SortieFixtures extends Fixture implements DependentFixtureInterface
             ->setInfosSortie('Nantes et Lyon se rencontrent pour cette dernière partie de championnat, venez supporter les canaris avec nous !')
             ->setOrganisateur($faker->randomElement($participants))
             ->setLieu($lieuxMap['Match FC Nantes'])
-            ->setEtat($faker->randomElement($etats))
+            ->setEtat($etatsMap['Créée'])
             ->setSite($faker->randomElement($sites));
         $manager->persist($sortie);
 
@@ -166,7 +170,7 @@ class SortieFixtures extends Fixture implements DependentFixtureInterface
             ->setInfosSortie('On passe la journée à Lorient, et on fait une activité windsurfing !')
             ->setOrganisateur($faker->randomElement($participants))
             ->setLieu($lieuxMap['WindSurfing'])
-            ->setEtat($faker->randomElement($etats))
+            ->setEtat($etatsMap['Créée'])
             ->setSite($faker->randomElement($sites));
         $manager->persist($sortie);
 
@@ -181,7 +185,7 @@ class SortieFixtures extends Fixture implements DependentFixtureInterface
             ->setInfosSortie('Sur la Vilaine, on propose une journée pour découvrir le kayak')
             ->setOrganisateur($faker->randomElement($participants))
             ->setLieu($lieuxMap['Kayak'])
-            ->setEtat($faker->randomElement($etats))
+            ->setEtat($etatsMap['Créée'])
             ->setSite($faker->randomElement($sites));
         $manager->persist($sortie);
 

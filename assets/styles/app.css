@@ -1,5 +1,8 @@
 body {
-    background-color: skyblue;
+    background-color: black;
+    font-family: 'Arial Pro', 'Arial', sans-serif;
+    background: url('../img/Capture123.PNG') no-repeat center center fixed;
+    background-size: cover;
 }
 .status-indicator {
     display: inline-block;
@@ -91,13 +94,42 @@ body {
 .dropdown-divider {
     border-top: 1px solid #ffffff; /* Couleur blanche pour le séparateur */
 }
-
-
-
-
-
-
 .dropdown-toggle {
     color: #ef921c !important;
     background: black !important;
+}
+body {
+    font-family: 'Arial Pro', 'Arial', sans-serif;
+    padding-top: 76px; /* Pour compenser la navbar fixed-top */
+}
+
+/* Suppression de toute bordure bleue */
+.navbar {
+    border: none !important;
+    border-bottom: none !important;
+}
+
+/* Effet d'inversion des couleurs au survol */
+.hover-invert:hover {
+    background-color: #FF8C00 !important; /* Orange au survol */
+    color: black !important;
+}
+
+/* Style pour les éléments de dropdown au survol */
+.dropdown-item.hover-invert:hover {
+    background-color: #FF8C00 !important;
+    color: black !important;
+}
+
+/* Suppression de focus bleu sur les éléments */
+.navbar a:focus, .dropdown-item:focus, .nav-link:focus {
+    box-shadow: none !important;
+    outline: none !important;
+    border-color: transparent !important;
+}
+
+/* Suppression de la bordure du bouton hamburger */
+.navbar-toggler:focus {
+    box-shadow: none !important;
+    outline: none !important;
 }

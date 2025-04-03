@@ -3,11 +3,26 @@
 {% block title %}Mon Profil{% endblock %}
 
 {% block body %}
-    <div class="container d-flex justify-content-center mt-5 position-relative">
+    <div class="container d-flex justify-content-center mt-5">
+        <div class="card shadow-lg p-4 rounded-lg bg-black border-3 text-center position-relative"
+             style="max-width: 500px; width: 100%; border-radius: 20px; border-color: darkorange;">
 
-        <div class="card shadow-lg p-4 rounded-lg bg-black border-3 text-center"
-             style="margin-top: 7rem; max-width: 500px; width: 100%; border-radius: 20px; border-color: darkorange;">
-            <div class="card-body text-center">
+            <!-- Boutons de navigation en haut de la carte -->
+            <div class="d-flex justify-content-between align-items-center position-absolute w-100 px-3" style="top: 10px; left: 0;">
+                {% if previousUserId is not null %}
+                    <a href="{{ path('profil_utilisateur', {'id': previousUserId}) }}" class="btn border text-white fw-bold hover-effect">
+                        <i class="bi bi-arrow-left"></i> Précédent
+                    </a>
+                {% endif %}
+
+                {% if nextUserId is not null %}
+                    <a href="{{ path('profil_utilisateur', {'id': nextUserId}) }}" class="btn border text-white fw-bold hover-effect">
+                        Suivant <i class="bi bi-arrow-right"></i>
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="card-body text-center mt-5">
                 <h2 class="card-title mb-3 fw-bold text-white">{{ participant.username }}</h2>
 
                 <!-- Photo de profil -->
@@ -82,6 +97,13 @@
             </div>
         </div>
     </div>
+
+    <style>
+        .hover-effect:hover {
+            background-color: darkorange !important;
+            color: black !important;
+        }
+    </style>
 
     <script>
         // Toggle du statut actif/inactif avec AJAX

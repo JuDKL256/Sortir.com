@@ -63,7 +63,7 @@
 
                     {% if app.user == sortie.organisateur %}
                         <a href="{{ path('annulation', {'id': sortie.id, '_token': csrf_token('annulation' ~ sortie.id)}) }}"
-                           class="btn btn-dark border custom-hover fw-bold" style="color: darkorange">❌ Annuler</a>
+                           class="btn  border custom-hover fw-bold" style="color: darkorange">❌ Annuler</a>
                     {% endif %}
 
                     <a href="{{ path('sortie_update', {'id': sortie.id}) }}" class="btn border custom-hover fw-bold" style="color: darkorange">✏️ Modifier</a>

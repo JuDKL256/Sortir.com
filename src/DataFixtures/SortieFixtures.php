@@ -34,6 +34,11 @@ class SortieFixtures extends Fixture implements DependentFixtureInterface
             $etatsMap[$etat->getLibelle()]=$etat;
         }
 
+        $etatsMap = [];
+        foreach ($etats as $etat) {
+            $etatsMap[$etat->getLibelle()] = $etat;
+        }
+
         $sortie = new Sortie();
         $sortie
             ->setNom('Après midi Karting')

@@ -28,7 +28,10 @@ class SortieType extends AbstractType
             ->add('duree')
             ->add('dateLimiteInscription', DateType::class, [
                 'widget' => 'single_text',
-                'attr' => ['class' => 'js-datepicker'],
+                'attr' => [
+                    'class' => 'js-datepicker',
+                    'data-timezone' => 'Europe/Paris'
+                ],
             ])
             ->add('nbInscriptionMax')
             ->add('infosSortie')
@@ -41,15 +44,15 @@ class SortieType extends AbstractType
                 'choice_label' => 'nom',
             ])
 
-            ->add('Participants', EntityType::class, [
-                'class' => Participant::class,
-                'choice_label' => 'username',
-                'multiple' => true,
-            ])
-            ->add('etat', EntityType::class, [
-                'class' => Etat::class,
-                'choice_label' => 'libelle',
-            ])
+//            ->add('Participants', EntityType::class, [
+//                'class' => Participant::class,
+//                'choice_label' => 'username',
+//                'multiple' => true,
+//            ])
+//            ->add('etat', EntityType::class, [
+//                'class' => Etat::class,
+//                'choice_label' => 'libelle',
+//            ])
         ;
     }
 

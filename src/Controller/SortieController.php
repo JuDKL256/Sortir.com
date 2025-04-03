@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Etat;
 use App\Entity\MotifAnnulation;
 use App\Entity\Participant;
 use App\Entity\Sortie;
@@ -11,6 +12,7 @@ use App\Form\SearchType;
 use App\Form\SortieType;
 use App\Models\SearchForm;
 use App\Repository\SortieRepository;
+use App\Service\SortieManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +22,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class SortieController extends AbstractController
 {
     #[Route('/sorties', name: 'sortie_list', methods: ['GET'])]
-    public function list(Request $request, SortieRepository $sortieRepository
+    public function list(Request $request, SortieRepository $sortieRepository, SortieManager $sortieManager
     ): Response
     {
         $user = $this->getUser(); // Récupère l'utilisateur connecté
@@ -32,6 +34,10 @@ class SortieController extends AbstractController
         if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $filtres = $searchForm->getData();
             $sorties = $sortieRepository->rechercheSorties($filtres);
+        }
+
+        foreach ($sorties as $sortie) {
+            $sortieManager->updateEtatSortie($sortie);
         }
 
         return $this->render('sortie/list.html.twig', [
@@ -75,9 +81,54 @@ class SortieController extends AbstractController
     #[Route('/sorties/create', name: 'sortie_create', methods: ['GET', 'POST'])]
     public function create(Request $request, EntityManagerInterface $em): Response
     {
+        // Blocage des appareils mobiles
+        if ($this->isMobileRequest($request)) {
+            return $this->redirectToRoute('app_error', [
+                'message' => "La création de sortie n'est pas disponible sur mobile."
+            ]);
+        }
         //Création de l'entité vide
         $sortie = new Sortie();
         $sortie->setOrganisateur($this->getUser());
+        $etat = new Etat();
+        $etat = $em->getRepository(Etat::class)->findOneBy(['libelle' => 'Créée']);
+        $sortie->setEtat($etat);
+        //Création du formulaire et association de l'entité vide.
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
+        //Récupère les données du formulaire et on les injecte dans notre $sortie.
+        $sortieForm->handleRequest($request);
+        //On vérifie si le formulaire a été soumis et que les données soumises sont valides.
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+
+            $timezone = new \DateTimeZone('Europe/Paris');
+            $dateDebut = $sortie->getDateHeureDebut()->setTimezone($timezone);
+            $sortie->setDateHeureDebut($dateDebut);
+
+            $sortie->setDuree($sortieForm->get('duree')->getData() * 60);
+            //Hydrater les propriétés absentes du formulaire
+//            $sortie->setIsPublished(true);
+            //Sauvegarde dans la Bdd
+            //ajout de la relation avec le user
+            $em->persist($sortie);
+            $em->flush();
+            //Affiche un message à l'utilisateur sur la prochaine page.
+            $this->addFlash('success', 'Your sortie has been created!');
+            //Redirige vers la page de detail du sortie
+            return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
+        }
+        //Affiche le formulaire
+        return $this->render('sortie/creation.html.twig', ["sortieForm" => $sortieForm]);
+    }
+
+    #[Route('/sorties/save', name: 'sortie_save', methods: ['GET', 'POST'])]
+    public function save(Request $request, EntityManagerInterface $em): Response
+    {
+        //Création de l'entité vide
+        $sortie = new Sortie();
+        $sortie->setOrganisateur($this->getUser());
+        $etat = new Etat();
+        $etat = $em->getRepository(Etat::class)->findOneBy(['libelle' => 'Ouverte']);
+        $sortie->setEtat($etat);
         //Création du formulaire et association de l'entité vide.
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         //Récupère les données du formulaire et on les injecte dans notre $sortie.
@@ -201,30 +252,44 @@ class SortieController extends AbstractController
 
     #[Route('/sorties/{id}/annulation', name: 'annulation', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
 //    #[IsGranted('WISH_EDIT', 'sortie')]
-    public function annulation(Sortie $sortie, MotifAnnulation $motif, Request $request, EntityManagerInterface $em): Response
+    public function annulation(Sortie $sortie,Request $request, EntityManagerInterface $em, SortieManager $sortieManager): Response
     {
-        $sortie = $em->getRepository(Sortie::class)->find($sortie->getId());
+
+        // Vérification que l'utilisateur est bien l'organisateur
+        if ($sortie->getOrganisateur() !== $this->getUser()) {
+            throw $this->createAccessDeniedException("Seul l'organisateur peut annuler la sortie");
+        }
+
+        // Vérification que la sortie peut être annulée (état ouvert ou clôturé)
+        $etatLibelle = $sortie->getEtat()->getLibelle();
+        if (!in_array($etatLibelle, ['Ouverte', 'Clôturée'])) {
+            $this->addFlash('danger', 'Cette sortie ne peut plus être annulée');
+            return $this->redirectToRoute('sortie_detail', ['id' => $sortie->getId()]);
+        }
         //Création de l'entité vide
         $motif = new MotifAnnulation();
         $motif->setSortie($sortie);
+
         //Création du formulaire et association de l'entité vide.
         $annulationForm = $this->createForm(MotifAnnulationType::class, $motif);
         //Récupère les données du formulaire et on les injecte dans notre $sortie.
         $annulationForm->handleRequest($request);
         //On vérifie si le formulaire a été soumis et que les données soumises sont valides.
         if ($annulationForm->isSubmitted() && $annulationForm->isValid()) {
-            $sortie->getEtat()->setLibelle("Annulée");
-            $sortie->setInfosSortie("Annulation : " . $motif->getMotif());
-            //ajout de la relation avec le user
-            $em->persist($sortie);
-            $em->persist($motif);
-            $em->flush();
-            //Affiche un message à l'utilisateur sur la prochaine page.
-            $this->addFlash('success', 'Ta sortie a bien été annulée !');
-            //Redirige vers la page de detail du sortie
+            $sortieManager->annulerSortie($sortie, $motif);
+            $this->addFlash('success', 'La sortie a bien été annulée !');
             return $this->redirectToRoute('sortie_list');
         }
         //Affiche le formulaire
-        return $this->render('sortie/annulation.html.twig', ["MotifAnnulationForm" => $annulationForm]);
+        return $this->render('sortie/annulation.html.twig', [
+            'MotifAnnulationForm' => $annulationForm->createView(),
+            'sortie' => $sortie
+        ]);
+    }
+
+    private function isMobileRequest(Request $request)
+    {
+        $userAgent = $request->headers->get('User-Agent');
+        return $userAgent && preg_match('/Mobile|Android|iPhone|iPad/i', $userAgent);
     }
 }

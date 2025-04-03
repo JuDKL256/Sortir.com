@@ -56,9 +56,16 @@ class SortieController extends AbstractController
     public function cancelled(SortieRepository $sortieRepository
     ): Response
     {
-        $sorties = $sortieRepository
-            ->findAll();
+        $sorties = $sortieRepository->findAll();
         return $this->render('sortie/cancelled.html.twig', ["sorties" => $sorties]);
+    }
+
+    #[Route('/sorties/archived', name: 'sortie_archived', methods: ['GET'])]
+    public function archived(SortieRepository $sortieRepository
+    ): Response
+    {
+        $sorties = $sortieRepository->findSortiesArchived();
+        return $this->render('sortie/archive.html.twig', ["sorties" => $sorties]);
     }
 
     #[Route('/sorties/{id}', name: 'sortie_detail', requirements: ['id' => '\d+'], methods: ['GET'])]

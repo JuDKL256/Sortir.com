@@ -44,7 +44,7 @@ class ParticipantFixtures extends Fixture implements DependentFixtureInterface
 
         $participant = new Participant();
         $participant
-            ->setUsername('Belobito')
+            ->setUsername('ManuFromLA')
             ->setNom('Ferrara')
             ->setPrenom('Manu')
             ->setmail('manu@manu.fr')

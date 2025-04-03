@@ -85,12 +85,20 @@ class SortieRepository extends ServiceEntityRepository
 
     public function findSortiesArchived()
     {
-        $currentDate = new \DateTime();
-        $currentDate->modify('-1 month');
-
         return $this->createQueryBuilder('s')
-            ->where('s.dateHeureDebut >= :oneMonthAgo')
-            ->setParameter('oneMonthAgo', $currentDate)
+            ->join('s.etat', 'e') // Jointure avec l'entité Etat
+            ->where('e.libelle = :etatArchive')
+            ->setParameter('etatArchive', 'Archivée')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findSortiesCancelled()
+    {
+        return $this->createQueryBuilder('s')
+            ->join('s.etat', 'e') // Jointure avec l'entité Etat
+            ->where('e.libelle = :etatAnnulee')
+            ->setParameter('etatAnnulee', 'Annulée')
             ->getQuery()
             ->getResult();
     }
